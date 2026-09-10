@@ -45,4 +45,5 @@ api.interceptors.response.use(
   }
 );
 
+export { api, api as apiClient };
 export default api;

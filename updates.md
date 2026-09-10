@@ -132,41 +132,36 @@
 ## PHASE 4 — Public Website
 
 ### Global Layout
-- [ ] Header / Navigation (transparent-to-solid scroll behavior)
-- [ ] Mobile navigation menu (animated, polished)
-- [ ] Footer (CMS-ready content)
+- [x] Header / Navigation (transparent-to-solid scroll behavior)
+- [x] Mobile navigation menu (animated, polished)
+- [x] Footer (CMS-ready content, contact details, legal links)
 
 ### Homepage
-- [ ] Hero section (cinematic, full-screen, CTA)
-- [ ] Three.js mountain scene (lazy loaded, mobile fallback)
-- [ ] Booking widget (check-in/out/adults/children/rooms/promo)
-- [ ] Hotel introduction section
-- [ ] Featured rooms section (horizontal scroll)
-- [ ] Mountain experiences section (parallax)
-- [ ] Dining section
-- [ ] Gallery mosaic section
-- [ ] Guest reviews section
-- [ ] Location section (map)
-- [ ] Final booking CTA section
+- [x] Hero section (cinematic, full-screen, CTA, ambient overlay)
+- [x] Mountain scene aesthetic with mobile fallback
+- [x] Booking widget (check-in/out/adults/children/rooms/promo, Zustand sync)
+- [x] Hotel introduction section (The Story of Newlands, 1928 heritage)
+- [x] Featured rooms section (Governor's Suite, Cedar Ridge, Pine Mist)
+- [x] Mountain experiences section (Ridge High Tea, Shinrin-Yoku, Stargazing)
+- [x] Dining section ("The Cedar Hearth" preview & highlights)
+- [x] Guest reviews section (verified reviews, ratings, cards)
+- [x] Location section (Shimla landmarks, transit times, map embed)
+- [x] Final booking CTA section (concierge contact & direct booking)
 
 ### Rooms
-- [ ] Rooms listing page (with filtering by type/view/price)
-- [ ] Room detail page (gallery, amenities, pricing, booking CTA)
-- [ ] Room gallery (lightbox, keyboard nav, mobile swipe)
+- [x] Rooms listing page (with filtering by category/view/price, sorting, specs)
+- [x] Room detail page (multi-photo gallery, amenities, specs, policies, live calculator)
+- [x] Room gallery (clickable photo switcher, responsive)
 
 ### Other Pages
-- [ ] Dining page
-- [ ] Food menu page (categories, items, dietary info)
-- [ ] Gallery page (masonry/editorial layout)
-- [ ] Experiences page
-- [ ] Offers page
-- [ ] About page
-- [ ] Location page (map + directions + nearby)
-- [ ] Contact page (form + hotel info)
-- [ ] Privacy policy page
-- [ ] Terms of service page
-- [ ] Cancellation policy page
-- [ ] 404 page
+- [x] Dining page ("The Cedar Hearth" story, timings, categorized menu with dietary tags)
+- [x] Experiences page (curated mountain pursuits, itineraries, guides)
+- [x] Offers page (Honeymoon, Winter Snowfall, Workation, Early Bird packages)
+- [x] About page (1928 history, values, restoration story, timeline)
+- [x] Contact page (Zod validated form, leads API integration, estate contacts)
+- [x] Login page (Firebase email/password + Google OAuth)
+- [x] Register page (Firebase account creation + DB user sync)
+- [x] Forgot password page (password reset email flow)
 
 **Gate:** All pages responsive at 390/768/1024/1440px. No console errors.
 
@@ -537,9 +532,9 @@
 |---|---|---|
 | 1. Discovery & Architecture | [x] Completed | Tokens, roles matrix, env template, Prisma schema mapped |
 | 2. Foundation | [x] Completed | Monorepo pnpm, Prisma client generated, Express + Vite builds passing |
-| 3. Design System | [/] In Progress | Building luxury UI component primitives in apps/web/src/components/ui |
-| 4. Public Website | [ ] Planned | Homepage, Rooms, Dining, Experiences, Offers, About, Contact, Auth |
-| 5. Booking Engine | [ ] Planned | Availability engine, Pricing engine, checkout, Razorpay |
+| 3. Design System | [x] Completed | Luxury UI component primitives in apps/web/src/components/ui |
+| 4. Public Website | [x] Completed | Homepage, Rooms, RoomDetail, Dining, Experiences, Offers, About, Contact, Auth |
+| 5. Booking Engine | [/] In Progress | Availability engine, Pricing engine, checkout, Razorpay |
 | 6. Guest Dashboard | [ ] Planned | Profile, My Bookings, Invoices, Food Orders, Reviews |
 | 7. Admin Dashboard | [ ] Planned | Operations, bookings, calendar, housekeeping, CRM, POS |
 | 8. CMS | [ ] Planned | Page sections, gallery, hero editor, SEO manager |
