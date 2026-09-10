@@ -1,5 +1,11 @@
-import { Router } from 'express';
-const router = Router();
-// TODO: implement notifications routes
-router.get('/', (_req, res) => res.json({ success: true, message: 'notifications module placeholder', data: [] }));
+import { Router } from "express";
+import { NotificationsController } from "./notifications.controller";
+import { authenticate } from "../../middleware/authenticate";
+
+const router: Router = Router();
+
+router.get("/my-notifications", authenticate, NotificationsController.getMyNotifications);
+router.patch("/mark-all-read", authenticate, NotificationsController.markAllAsRead);
+router.patch("/:id/read", authenticate, NotificationsController.markAsRead);
+
 export default router;

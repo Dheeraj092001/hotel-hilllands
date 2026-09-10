@@ -1,5 +1,10 @@
-import { Router } from 'express';
-const router = Router();
-// TODO: implement invoices routes
-router.get('/', (_req, res) => res.json({ success: true, message: 'invoices module placeholder', data: [] }));
+import { Router } from "express";
+import { InvoicesController } from "./invoices.controller";
+import { authenticate } from "../../middleware/authenticate";
+
+const router: Router = Router();
+
+router.get("/my-invoices", authenticate, InvoicesController.getMyInvoices);
+router.get("/:id", authenticate, InvoicesController.getInvoice);
+
 export default router;

@@ -214,6 +214,7 @@ model Booking {
   checkedOutAt       DateTime?      @map("checked_out_at")
   payments           Payment[]
   invoice            Invoice?
+  review             Review?
   extras             BookingExtra[]
   createdAt          DateTime       @default(now()) @map("created_at")
   updatedAt          DateTime       @updatedAt @map("updated_at")
@@ -446,6 +447,7 @@ model Review {
   userId              String   @map("user_id")
   user                User     @relation(fields: [userId], references: [id])
   bookingId           String   @unique @map("booking_id")
+  booking             Booking  @relation(fields: [bookingId], references: [id])
   overallRating       Int      @map("overall_rating")
   cleanlinessRating   Int      @map("cleanliness_rating")
   serviceRating       Int      @map("service_rating")
