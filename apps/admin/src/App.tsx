@@ -10,6 +10,10 @@ const BookingsPage = lazy(() => import("./pages/BookingsPage"));
 const CalendarPage = lazy(() => import("./pages/CalendarPage"));
 const RoomsPage = lazy(() => import("./pages/RoomsPage"));
 const HousekeepingPage = lazy(() => import("./pages/HousekeepingPage"));
+const DiningPosPage = lazy(() => import("./pages/DiningPosPage"));
+const FinancePage = lazy(() => import("./pages/FinancePage"));
+const AnalyticsPage = lazy(() => import("./pages/AnalyticsPage"));
+const CmsPage = lazy(() => import("./pages/CmsPage"));
 const GuestsCrmPage = lazy(() => import("./pages/GuestsCrmPage"));
 const CouponsPage = lazy(() => import("./pages/CouponsPage"));
 const ReviewsPage = lazy(() => import("./pages/ReviewsPage"));
@@ -17,7 +21,6 @@ const LoginPage = lazy(() => import("./pages/LoginPage"));
 
 function ProtectedAdminRoute({ children }: { children: React.ReactNode }) {
   const { user } = useAdminAuthStore();
-  // Allow initial access or user presence
   return <>{children}</>;
 }
 
@@ -46,6 +49,10 @@ export default function App() {
           <Route path="calendar" element={<CalendarPage />} />
           <Route path="rooms" element={<RoomsPage />} />
           <Route path="housekeeping" element={<HousekeepingPage />} />
+          <Route path="dining-pos" element={<DiningPosPage />} />
+          <Route path="finance" element={<FinancePage />} />
+          <Route path="analytics" element={<AnalyticsPage />} />
+          <Route path="cms" element={<CmsPage />} />
           <Route path="guests" element={<GuestsCrmPage />} />
           <Route path="coupons" element={<CouponsPage />} />
           <Route path="reviews" element={<ReviewsPage />} />

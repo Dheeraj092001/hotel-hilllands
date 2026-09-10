@@ -15,6 +15,10 @@ import {
   Menu,
   X,
   ShieldCheck,
+  UtensilsCrossed,
+  Receipt,
+  BarChart3,
+  Globe,
 } from "lucide-react";
 import { useAdminAuthStore } from "../stores/authStore";
 import { auth } from "../lib/firebase";
@@ -25,6 +29,10 @@ const navItems = [
   { label: "Stay Calendar", path: "/calendar", icon: CalendarDays },
   { label: "Rooms & Suites", path: "/rooms", icon: BedDouble },
   { label: "Housekeeping Board", path: "/housekeeping", icon: Sparkles },
+  { label: "Dining & Kitchen POS", path: "/dining-pos", icon: UtensilsCrossed },
+  { label: "Finance & Tax Ledger", path: "/finance", icon: Receipt },
+  { label: "Yield & Analytics", path: "/analytics", icon: BarChart3 },
+  { label: "Website CMS", path: "/cms", icon: Globe },
   { label: "Guests CRM", path: "/guests", icon: Users },
   { label: "Coupons & Offers", path: "/coupons", icon: Tag },
   { label: "Reviews Moderation", path: "/reviews", icon: Star },
