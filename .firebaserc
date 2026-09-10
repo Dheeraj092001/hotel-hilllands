@@ -1,0 +1,17 @@
+{
+  "projects": {
+    "default": "newlands-shimla"
+  },
+  "targets": {
+    "newlands-shimla": {
+      "hosting": {
+        "web": [
+          "newlands-shimla"
+        ],
+        "admin": [
+          "newlands-shimla-admin"
+        ]
+      }
+    }
+  }
+}
