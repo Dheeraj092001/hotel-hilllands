@@ -28,8 +28,7 @@ export const FEATURED_ROOMS: FeaturedRoom[] = [
     size: "680 sq ft",
     capacity: "2-3 Guests",
     view: "Snow Peak & Valley",
-    image:
-      "https://images.unsplash.com/photo-1590490360182-c33d57733427?auto=format&fit=crop&w=1000&q=80",
+    image: "/images/ultra-luxury.jpeg",
     amenities: ["Private Fireplace", "Heritage Teak Balcony", "Butler Service", "Clawfoot Tub"],
   },
   {
@@ -40,8 +39,7 @@ export const FEATURED_ROOMS: FeaturedRoom[] = [
     size: "450 sq ft",
     capacity: "2 Guests",
     view: "Ancient Deodar Grove",
-    image:
-      "https://images.unsplash.com/photo-1618773928121-c32242e63f39?auto=format&fit=crop&w=1000&q=80",
+    image: "/images/luxury-suit (1).jpeg",
     amenities: ["King Feather Bed", "Forest View Alcove", "Artisan Bath Salts", "Rain Shower"],
   },
   {
@@ -52,8 +50,7 @@ export const FEATURED_ROOMS: FeaturedRoom[] = [
     size: "560 sq ft",
     capacity: "2-3 Guests",
     view: "Panoramic Ridge View",
-    image:
-      "https://images.unsplash.com/photo-1566665797739-1674de7a421a?auto=format&fit=crop&w=1000&q=80",
+    image: "/images/premium.jpeg",
     amenities: ["Cast-Iron Wood Stove", "Sunset Vista Terrace", "Heated Floors", "Daybed Nook"],
   },
 ];

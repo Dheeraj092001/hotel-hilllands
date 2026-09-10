@@ -25,7 +25,7 @@ const ALL_EXPERIENCES: FullExperience[] = [
     duration: "2 Hours",
     groupSize: "2 – 6 Guests",
     timeOfDay: "4:00 PM – 6:00 PM",
-    image: "https://images.unsplash.com/photo-1544816155-12df9643f363?auto=format&fit=crop&w=800&q=80",
+    image: "/images/balcony-view.jpeg",
     description:
       "Perched on our private panoramic viewpoint, savor freshly baked scones with clotted cream, mountain berry preserves, and whole-leaf Kangra tea flushes as alpenglow warms the Pir Panjal range.",
     highlights: ["Single-Estate Kangra Teas", "Warm Clotted Cream Scones", "Private Butler Service", "Unobstructed Sunset Views"],
@@ -37,7 +37,7 @@ const ALL_EXPERIENCES: FullExperience[] = [
     duration: "3 Hours",
     groupSize: "Private or Small Group",
     timeOfDay: "Morning 8:00 AM",
-    image: "https://images.unsplash.com/photo-1448375240586-882707db888b?auto=format&fit=crop&w=800&q=80",
+    image: "/images/view-from-room.jpeg",
     description:
       "A meditative nature immersion through century-old deodar cedar forests led by our resident naturalist. Inhale restorative alpine phytoncides while learning the medicinal botany of Himachal hills.",
     highlights: ["Guided Sensory Meditation", "Herbal Botanical Walk", "Naturalist Accompaniment", "Wildflower Honey Infusion"],
@@ -49,7 +49,7 @@ const ALL_EXPERIENCES: FullExperience[] = [
     duration: "Nightly 7:30 PM",
     groupSize: "Resident Guests",
     timeOfDay: "Evening",
-    image: "https://images.unsplash.com/photo-1510312305653-8ed496efae75?auto=format&fit=crop&w=800&q=80",
+    image: "/images/common-area.jpeg",
     description:
       "Gather around glowing logs of seasoned pine under crystalline high-altitude skies. Peer into celestial nebulae through our computerized telescope with hot spiced apple toddies in hand.",
     highlights: ["High-Powered Astronomy Telescope", "Hot Spiced Himachali Cider", "Charred Marshmallows", "Fireside Acoustic Music"],
@@ -61,7 +61,7 @@ const ALL_EXPERIENCES: FullExperience[] = [
     duration: "4 Hours",
     groupSize: "2 – 8 Guests",
     timeOfDay: "Morning 9:30 AM",
-    image: "https://images.unsplash.com/photo-1569949381669-ecf31ae8e613?auto=format&fit=crop&w=800&q=80",
+    image: "/images/shimla.jpeg",
     description:
       "An exclusive architectural walk through forgotten colonial summer estates, the Gaiety Theatre archives, Christ Church, and private libraries, curated by local Shimla cultural historians.",
     highlights: ["Historian Guide", "Archival Access to Gaiety Theatre", "Chauffeur Transport", "Printed Heritage Booklet"],
@@ -73,7 +73,7 @@ const ALL_EXPERIENCES: FullExperience[] = [
     duration: "Half Day",
     groupSize: "2 – 4 Guests",
     timeOfDay: "11:30 AM – 3:30 PM",
-    image: "https://images.unsplash.com/photo-1526772662000-3f88f10405ff?auto=format&fit=crop&w=800&q=80",
+    image: "/images/reception.jpeg",
     description:
       "Let our team set up an opulent picnic layout in a wildflower mountain meadow. Features wicker hampers filled with charcuterie, artisanal cheeses, crusty baguettes, and fresh orchard cider.",
     highlights: ["Vintage Wicker Basket Setup", "Curated Cheese & Fruit Selection", "Luxury Wool Throw Blankets", "Scenic Valley Lookout"],

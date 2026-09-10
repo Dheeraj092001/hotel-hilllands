@@ -20,16 +20,16 @@ export const IntroSection: React.FC = () => {
           <div className="lg:col-span-6 relative">
             <div className="relative z-10 w-[85%] aspect-[4/5] rounded-sm overflow-hidden shadow-2xl border-4 border-white">
               <img
-                src="https://images.unsplash.com/photo-1582719478250-c89cae4dc85b?auto=format&fit=crop&w=1000&q=80"
-                alt="Hotel Newlands Colonial Suite Interior"
+                src="/images/reception.jpeg"
+                alt="Hotel Newlands Reception & Heritage Lounge"
                 className="w-full h-full object-cover hover:scale-105 transition-transform duration-700"
               />
             </div>
             {/* Overlapping secondary image */}
             <div className="absolute -bottom-8 -right-2 sm:right-4 z-20 w-[55%] aspect-square rounded-sm overflow-hidden shadow-2xl border-4 border-white">
               <img
-                src="https://images.unsplash.com/photo-1518780664697-55e3ad937233?auto=format&fit=crop&w=800&q=80"
-                alt="Misty Deodar Forest around Newlands Shimla"
+                src="/images/balcony-view.jpeg"
+                alt="Balcony Mountain View around Newlands Shimla"
                 className="w-full h-full object-cover hover:scale-105 transition-transform duration-700"
               />
             </div>

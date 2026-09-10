@@ -54,7 +54,7 @@ export const DiningPreviewSection: React.FC = () => {
           <div className="lg:col-span-5 relative">
             <div className="aspect-[3/4] rounded-sm overflow-hidden shadow-2xl border-4 border-white">
               <img
-                src="https://images.unsplash.com/photo-1550966871-3ed3cdb5ed0c?auto=format&fit=crop&w=800&q=80"
+                src="/images/common-area.jpeg"
                 alt="The Cedar Hearth Dining Room at Hotel Newlands Shimla"
                 className="w-full h-full object-cover hover:scale-105 transition-transform duration-700"
               />

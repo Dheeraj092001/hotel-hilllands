@@ -92,7 +92,7 @@ export default function MyBookingsPage() {
           {filteredBookings.map((b) => {
             const checkInFormatted = format(new Date(b.checkIn), "EEE, d MMM yyyy");
             const checkOutFormatted = format(new Date(b.checkOut), "EEE, d MMM yyyy");
-            const roomImg = b.room?.images?.[0]?.url || "https://images.unsplash.com/photo-1590490360182-c33d57733427?auto=format&fit=crop&w=800&q=80";
+            const roomImg = b.room?.images?.[0]?.url || "/images/ultra-luxury.jpeg";
 
             return (
               <div

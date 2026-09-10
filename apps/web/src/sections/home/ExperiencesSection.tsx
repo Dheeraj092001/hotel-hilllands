@@ -21,8 +21,7 @@ const EXPERIENCES: Experience[] = [
     duration: "2 Hours",
     description:
       "Hand-selected Kangra flushes and artisanal pastries served at sunset as the snow peaks blush pink.",
-    image:
-      "https://images.unsplash.com/photo-1544816155-12df9643f363?auto=format&fit=crop&w=800&q=80",
+    image: "/images/balcony-view.jpeg",
     icon: <Coffee className="w-4 h-4" />,
   },
   {
@@ -31,8 +30,7 @@ const EXPERIENCES: Experience[] = [
     duration: "3 Hours",
     description:
       "A guided contemplative walk through fragrant century-old pines designed to restore physiological balance.",
-    image:
-      "https://images.unsplash.com/photo-1448375240586-882707db888b?auto=format&fit=crop&w=800&q=80",
+    image: "/images/view-from-room.jpeg",
     icon: <Trees className="w-4 h-4" />,
   },
   {
@@ -41,8 +39,7 @@ const EXPERIENCES: Experience[] = [
     duration: "Nightly",
     description:
       "Crisp mountain night air warmed by crackling cedar logs, telescope sky viewings, and hot spiced Himachali cider.",
-    image:
-      "https://images.unsplash.com/photo-1510312305653-8ed496efae75?auto=format&fit=crop&w=800&q=80",
+    image: "/images/common-area.jpeg",
     icon: <Moon className="w-4 h-4" />,
   },
   {
@@ -51,8 +48,7 @@ const EXPERIENCES: Experience[] = [
     duration: "Half Day",
     description:
       "A bespoke architectural journey tracing British summer capital heritage, archival libraries, and hidden viewpoints.",
-    image:
-      "https://images.unsplash.com/photo-1569949381669-ecf31ae8e613?auto=format&fit=crop&w=800&q=80",
+    image: "/images/shimla.jpeg",
     icon: <Compass className="w-4 h-4" />,
   },
 ];

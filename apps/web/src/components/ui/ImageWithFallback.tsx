@@ -5,8 +5,7 @@ export interface ImageWithFallbackProps
   fallbackSrc?: string;
 }
 
-const DEFAULT_FALLBACK =
-  "https://images.unsplash.com/photo-1566073771259-6a8506099945?auto=format&fit=crop&w=1200&q=80";
+const DEFAULT_FALLBACK = "/images/ultra-luxury.jpeg";
 
 export const ImageWithFallback: React.FC<ImageWithFallbackProps> = ({
   src,

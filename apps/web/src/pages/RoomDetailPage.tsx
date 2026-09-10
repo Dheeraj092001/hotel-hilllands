@@ -31,9 +31,21 @@ export default function RoomDetailPage() {
   // Gallery of high-res photos
   const gallery = [
     room.image,
-    "https://images.unsplash.com/photo-1582719478250-c89cae4dc85b?auto=format&fit=crop&w=1200&q=80",
-    "https://images.unsplash.com/photo-1590490360182-c33d57733427?auto=format&fit=crop&w=1200&q=80",
-    "https://images.unsplash.com/photo-1566665797739-1674de7a421a?auto=format&fit=crop&w=1200&q=80",
+    room.category === "suite"
+      ? "/images/ultra-luxury (1).jpeg"
+      : room.category === "cottage"
+      ? "/images/ultra-luxury (5).jpeg"
+      : "/images/premium(2).jpeg",
+    room.category === "suite"
+      ? "/images/ultra-luxury (2).jpeg"
+      : room.category === "cottage"
+      ? "/images/ultra-luxury (6).jpeg"
+      : "/images/premium4.jpeg",
+    room.category === "suite"
+      ? "/images/ultra-luxury-washroom.jpeg"
+      : "/images/primium-washroom.jpeg",
+    "/images/balcony-view.jpeg",
+    "/images/view-from-room.jpeg",
   ];
 
   const todayStr = new Date().toISOString().split("T")[0];

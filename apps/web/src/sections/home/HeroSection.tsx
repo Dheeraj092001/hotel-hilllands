@@ -10,7 +10,7 @@ export const HeroSection: React.FC = () => {
       {/* Background Image with Cinematic Overlay */}
       <div className="absolute inset-0 z-0">
         <img
-          src="https://images.unsplash.com/photo-1548013146-72479768bada?auto=format&fit=crop&w=2000&q=85"
+          src="/images/shimla.jpeg"
           alt="Himalayan Mountain Landscape surrounding Hotel Newlands Shimla"
           className="w-full h-full object-cover object-center scale-105 animate-pulse duration-[10000ms]"
         />

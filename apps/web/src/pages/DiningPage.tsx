@@ -146,7 +146,7 @@ export default function DiningPage() {
       <div className="relative py-20 bg-deep-forest text-warm-ivory overflow-hidden mb-12">
         <div className="absolute inset-0 opacity-20">
           <img
-            src="https://images.unsplash.com/photo-1550966871-3ed3cdb5ed0c?auto=format&fit=crop&w=1600&q=80"
+            src="/images/common-area.jpeg"
             alt="The Cedar Hearth Ambiance"
             className="w-full h-full object-cover"
           />
@@ -183,8 +183,8 @@ export default function DiningPage() {
           <div className="lg:col-span-6 relative">
             <div className="aspect-[4/3] rounded-sm overflow-hidden shadow-xl border-4 border-white">
               <img
-                src="https://images.unsplash.com/photo-1517248135467-4c7edcad34c4?auto=format&fit=crop&w=1000&q=80"
-                alt="Dining Table Setup by Candlelight"
+                src="/images/reception.jpeg"
+                alt="Dining Lounge Setup by Candlelight"
                 className="w-full h-full object-cover"
               />
             </div>
