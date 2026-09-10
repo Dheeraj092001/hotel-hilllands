@@ -1,0 +1,670 @@
+// ============================================================
+// HOTEL NEWLANDS SHIMLA — Complete Prisma Schema
+// ============================================================
+
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "mysql"
+  url      = env("DATABASE_URL")
+}
+
+// ─── Auth / Users ─────────────────────────────────────────────
+model User {
+  id               String   @id @default(uuid())
+  firebaseUid      String   @unique @map("firebase_uid")
+  name             String
+  email            String   @unique
+  phone            String?
+  dateOfBirth      DateTime? @map("date_of_birth")
+  profileImage     String?  @map("profile_image")
+  address          String?
+  city             String?
+  state            String?
+  country          String?
+  postalCode       String?  @map("postal_code")
+  preferences      Json?
+  isEmailVerified  Boolean  @default(false) @map("is_email_verified")
+  isActive         Boolean  @default(true) @map("is_active")
+  roleId           String?  @map("role_id")
+  role             Role?    @relation(fields: [roleId], references: [id])
+  bookings         Booking[]
+  payments         Payment[]
+  foodOrders       FoodOrder[]
+  reviews          Review[]
+  notifications    Notification[]
+  createdAt        DateTime @default(now()) @map("created_at")
+  updatedAt        DateTime @updatedAt @map("updated_at")
+  deletedAt        DateTime? @map("deleted_at")
+
+  @@index([email])
+  @@index([firebaseUid])
+  @@index([roleId])
+  @@map("users")
+}
+
+model Role {
+  id          String           @id @default(uuid())
+  name        String           @unique
+  description String?
+  permissions RolePermission[]
+  users       User[]
+  createdAt   DateTime         @default(now()) @map("created_at")
+  updatedAt   DateTime         @updatedAt @map("updated_at")
+
+  @@map("roles")
+}
+
+model Permission {
+  id          String           @id @default(uuid())
+  name        String           @unique
+  description String?
+  roles       RolePermission[]
+  createdAt   DateTime         @default(now()) @map("created_at")
+
+  @@map("permissions")
+}
+
+model RolePermission {
+  id           String     @id @default(uuid())
+  roleId       String     @map("role_id")
+  permissionId String     @map("permission_id")
+  role         Role       @relation(fields: [roleId], references: [id], onDelete: Cascade)
+  permission   Permission @relation(fields: [permissionId], references: [id], onDelete: Cascade)
+
+  @@unique([roleId, permissionId])
+  @@map("role_permissions")
+}
+
+// ─── Rooms ────────────────────────────────────────────────────
+model RoomType {
+  id          String  @id @default(uuid())
+  name        String  @unique
+  slug        String  @unique
+  description String? @db.Text
+  rooms       Room[]
+  createdAt   DateTime @default(now()) @map("created_at")
+  updatedAt   DateTime @updatedAt @map("updated_at")
+
+  @@map("room_types")
+}
+
+model Room {
+  id                 String           @id @default(uuid())
+  roomNumber         String           @unique @map("room_number")
+  name               String
+  slug               String           @unique
+  typeId             String           @map("type_id")
+  type               RoomType         @relation(fields: [typeId], references: [id])
+  description        String           @db.Text
+  shortDescription   String           @db.Text @map("short_description")
+  maxAdults          Int              @map("max_adults")
+  maxChildren        Int              @default(0) @map("max_children")
+  bedType            String           @map("bed_type")
+  numberOfBeds       Int              @map("number_of_beds")
+  sizeInSqft         Float            @map("size_in_sqft")
+  floor              Int              @default(0)
+  viewType           String           @map("view_type")
+  basePrice          Decimal          @db.Decimal(10, 2) @map("base_price")
+  weekendPrice       Decimal          @db.Decimal(10, 2) @map("weekend_price")
+  seasonalPrice      Decimal?         @db.Decimal(10, 2) @map("seasonal_price")
+  discount           Decimal          @default(0) @db.Decimal(5, 2)
+  status             String           @default("AVAILABLE")
+  housekeepingStatus String           @default("CLEAN") @map("housekeeping_status")
+  isFeatured         Boolean          @default(false) @map("is_featured")
+  isPublished        Boolean          @default(true) @map("is_published")
+  sortOrder          Int              @default(0) @map("sort_order")
+  images             RoomImage[]
+  amenities          RoomAmenity[]
+  bookings           Booking[]
+  blocks             RoomBlock[]
+  createdAt          DateTime         @default(now()) @map("created_at")
+  updatedAt          DateTime         @updatedAt @map("updated_at")
+  deletedAt          DateTime?        @map("deleted_at")
+
+  @@index([status])
+  @@index([typeId])
+  @@index([isFeatured])
+  @@map("rooms")
+}
+
+model RoomImage {
+  id        String  @id @default(uuid())
+  roomId    String  @map("room_id")
+  room      Room    @relation(fields: [roomId], references: [id], onDelete: Cascade)
+  url       String
+  publicId  String? @map("public_id")
+  altText   String? @map("alt_text")
+  caption   String?
+  sortOrder Int     @default(0) @map("sort_order")
+  isPrimary Boolean @default(false) @map("is_primary")
+  createdAt DateTime @default(now()) @map("created_at")
+
+  @@index([roomId])
+  @@map("room_images")
+}
+
+model Amenity {
+  id       String        @id @default(uuid())
+  name     String        @unique
+  icon     String?
+  category String?
+  rooms    RoomAmenity[]
+
+  @@map("amenities")
+}
+
+model RoomAmenity {
+  id        String  @id @default(uuid())
+  roomId    String  @map("room_id")
+  amenityId String  @map("amenity_id")
+  room      Room    @relation(fields: [roomId], references: [id], onDelete: Cascade)
+  amenity   Amenity @relation(fields: [amenityId], references: [id])
+
+  @@unique([roomId, amenityId])
+  @@map("room_amenities")
+}
+
+model RoomBlock {
+  id        String   @id @default(uuid())
+  roomId    String   @map("room_id")
+  room      Room     @relation(fields: [roomId], references: [id], onDelete: Cascade)
+  startDate DateTime @map("start_date")
+  endDate   DateTime @map("end_date")
+  reason    String
+  notes     String?  @db.Text
+  createdBy String   @map("created_by")
+  createdAt DateTime @default(now()) @map("created_at")
+
+  @@index([roomId])
+  @@index([startDate, endDate])
+  @@map("room_blocks")
+}
+
+// ─── Bookings ─────────────────────────────────────────────────
+model Booking {
+  id                 String         @id @default(uuid())
+  confirmationNumber String         @unique @map("confirmation_number")
+  userId             String         @map("user_id")
+  user               User           @relation(fields: [userId], references: [id])
+  roomId             String         @map("room_id")
+  room               Room           @relation(fields: [roomId], references: [id])
+  checkIn            DateTime       @map("check_in")
+  checkOut           DateTime       @map("check_out")
+  adults             Int
+  children           Int            @default(0)
+  status             String         @default("PENDING")
+  subtotal           Decimal        @db.Decimal(10, 2)
+  discount           Decimal        @default(0) @db.Decimal(10, 2)
+  tax                Decimal        @default(0) @db.Decimal(10, 2)
+  serviceCharge      Decimal        @default(0) @db.Decimal(10, 2) @map("service_charge")
+  total              Decimal        @db.Decimal(10, 2)
+  currency           String         @default("INR")
+  couponId           String?        @map("coupon_id")
+  coupon             Coupon?        @relation(fields: [couponId], references: [id])
+  source             String         @default("WEBSITE")
+  specialRequests    String?        @db.Text @map("special_requests")
+  guestName          String?        @map("guest_name")
+  guestEmail         String?        @map("guest_email")
+  guestPhone         String?        @map("guest_phone")
+  internalNotes      String?        @db.Text @map("internal_notes")
+  checkedInAt        DateTime?      @map("checked_in_at")
+  checkedOutAt       DateTime?      @map("checked_out_at")
+  payments           Payment[]
+  invoice            Invoice?
+  extras             BookingExtra[]
+  createdAt          DateTime       @default(now()) @map("created_at")
+  updatedAt          DateTime       @updatedAt @map("updated_at")
+
+  @@index([userId])
+  @@index([roomId])
+  @@index([status])
+  @@index([checkIn, checkOut])
+  @@index([confirmationNumber])
+  @@map("bookings")
+}
+
+model BookingExtra {
+  id        String  @id @default(uuid())
+  bookingId String  @map("booking_id")
+  booking   Booking @relation(fields: [bookingId], references: [id], onDelete: Cascade)
+  extraId   String  @map("extra_id")
+  extra     Extra   @relation(fields: [extraId], references: [id])
+  quantity  Int     @default(1)
+  price     Decimal @db.Decimal(10, 2)
+  notes     String?
+
+  @@map("booking_extras")
+}
+
+model Extra {
+  id          String         @id @default(uuid())
+  name        String
+  description String?
+  price       Decimal        @db.Decimal(10, 2)
+  category    String?
+  isActive    Boolean        @default(true) @map("is_active")
+  bookings    BookingExtra[]
+  createdAt   DateTime       @default(now()) @map("created_at")
+  updatedAt   DateTime       @updatedAt @map("updated_at")
+
+  @@map("extras")
+}
+
+// ─── Payments ─────────────────────────────────────────────────
+model Payment {
+  id                 String   @id @default(uuid())
+  bookingId          String   @map("booking_id")
+  booking            Booking  @relation(fields: [bookingId], references: [id])
+  userId             String   @map("user_id")
+  user               User     @relation(fields: [userId], references: [id])
+  transactionId      String   @unique @map("transaction_id")
+  provider           String   @default("RAZORPAY")
+  amount             Decimal  @db.Decimal(10, 2)
+  currency           String   @default("INR")
+  status             String   @default("CREATED")
+  razorpayOrderId    String?  @map("razorpay_order_id")
+  razorpayPaymentId  String?  @map("razorpay_payment_id")
+  razorpaySignature  String?  @map("razorpay_signature")
+  refundId           String?  @map("refund_id")
+  refundAmount       Decimal? @db.Decimal(10, 2) @map("refund_amount")
+  failureReason      String?  @map("failure_reason")
+  metadata           Json?
+  createdAt          DateTime @default(now()) @map("created_at")
+  updatedAt          DateTime @updatedAt @map("updated_at")
+
+  @@index([bookingId])
+  @@index([userId])
+  @@index([status])
+  @@map("payments")
+}
+
+// ─── Invoices ─────────────────────────────────────────────────
+model Invoice {
+  id            String        @id @default(uuid())
+  invoiceNumber String        @unique @map("invoice_number")
+  bookingId     String        @unique @map("booking_id")
+  booking       Booking       @relation(fields: [bookingId], references: [id])
+  subtotal      Decimal       @db.Decimal(10, 2)
+  discount      Decimal       @default(0) @db.Decimal(10, 2)
+  tax           Decimal       @default(0) @db.Decimal(10, 2)
+  serviceCharge Decimal       @default(0) @db.Decimal(10, 2) @map("service_charge")
+  extras        Decimal       @default(0) @db.Decimal(10, 2)
+  food          Decimal       @default(0) @db.Decimal(10, 2)
+  total         Decimal       @db.Decimal(10, 2)
+  currency      String        @default("INR")
+  status        String        @default("UNPAID")
+  pdfUrl        String?       @map("pdf_url")
+  issuedAt      DateTime      @default(now()) @map("issued_at")
+  dueDate       DateTime?     @map("due_date")
+  items         InvoiceItem[]
+  createdAt     DateTime      @default(now()) @map("created_at")
+  updatedAt     DateTime      @updatedAt @map("updated_at")
+
+  @@index([bookingId])
+  @@map("invoices")
+}
+
+model InvoiceItem {
+  id          String  @id @default(uuid())
+  invoiceId   String  @map("invoice_id")
+  invoice     Invoice @relation(fields: [invoiceId], references: [id], onDelete: Cascade)
+  description String
+  quantity    Int     @default(1)
+  unitPrice   Decimal @db.Decimal(10, 2) @map("unit_price")
+  amount      Decimal @db.Decimal(10, 2)
+  taxRate     Decimal @default(0) @db.Decimal(5, 2) @map("tax_rate")
+  category    String?
+
+  @@map("invoice_items")
+}
+
+// ─── Food ─────────────────────────────────────────────────────
+model FoodCategory {
+  id          String     @id @default(uuid())
+  name        String     @unique
+  slug        String     @unique
+  description String?
+  image       String?
+  sortOrder   Int        @default(0) @map("sort_order")
+  isActive    Boolean    @default(true) @map("is_active")
+  items       FoodItem[]
+  createdAt   DateTime   @default(now()) @map("created_at")
+  updatedAt   DateTime   @updatedAt @map("updated_at")
+
+  @@map("food_categories")
+}
+
+model FoodItem {
+  id                   String          @id @default(uuid())
+  categoryId           String          @map("category_id")
+  category             FoodCategory    @relation(fields: [categoryId], references: [id])
+  name                 String
+  slug                 String          @unique
+  description          String?         @db.Text
+  price                Decimal         @db.Decimal(10, 2)
+  discount             Decimal         @default(0) @db.Decimal(5, 2)
+  image                String?
+  imagePublicId        String?         @map("image_public_id")
+  isVeg                Boolean         @default(true) @map("is_veg")
+  spiceLevel           String?         @map("spice_level")
+  allergens            Json?
+  preparationTimeMin   Int?            @map("preparation_time_min")
+  isAvailable          Boolean         @default(true) @map("is_available")
+  isFeatured           Boolean         @default(false) @map("is_featured")
+  sortOrder            Int             @default(0) @map("sort_order")
+  orderItems           FoodOrderItem[]
+  createdAt            DateTime        @default(now()) @map("created_at")
+  updatedAt            DateTime        @updatedAt @map("updated_at")
+  deletedAt            DateTime?       @map("deleted_at")
+
+  @@index([categoryId])
+  @@map("food_items")
+}
+
+model FoodOrder {
+  id              String          @id @default(uuid())
+  userId          String          @map("user_id")
+  user            User            @relation(fields: [userId], references: [id])
+  bookingId       String?         @map("booking_id")
+  orderNumber     String          @unique @map("order_number")
+  status          String          @default("PLACED")
+  deliveryType    String          @default("ROOM") @map("delivery_type")
+  roomNumber      String?         @map("room_number")
+  subtotal        Decimal         @db.Decimal(10, 2)
+  tax             Decimal         @default(0) @db.Decimal(10, 2)
+  total           Decimal         @db.Decimal(10, 2)
+  paymentMethod   String?         @map("payment_method")
+  specialNotes    String?         @db.Text @map("special_notes")
+  items           FoodOrderItem[]
+  createdAt       DateTime        @default(now()) @map("created_at")
+  updatedAt       DateTime        @updatedAt @map("updated_at")
+
+  @@index([userId])
+  @@index([status])
+  @@index([bookingId])
+  @@map("food_orders")
+}
+
+model FoodOrderItem {
+  id                   String    @id @default(uuid())
+  orderId              String    @map("order_id")
+  order                FoodOrder @relation(fields: [orderId], references: [id], onDelete: Cascade)
+  foodItemId           String    @map("food_item_id")
+  foodItem             FoodItem  @relation(fields: [foodItemId], references: [id])
+  quantity             Int
+  unitPrice            Decimal   @db.Decimal(10, 2) @map("unit_price")
+  total                Decimal   @db.Decimal(10, 2)
+  specialInstructions  String?   @db.Text @map("special_instructions")
+
+  @@map("food_order_items")
+}
+
+// ─── Offers / Coupons ─────────────────────────────────────────
+model Coupon {
+  id                 String        @id @default(uuid())
+  code               String        @unique
+  description        String?
+  discountType       String        @map("discount_type")
+  value              Decimal       @db.Decimal(10, 2)
+  minBookingAmount   Decimal?      @db.Decimal(10, 2) @map("min_booking_amount")
+  maxDiscountAmount  Decimal?      @db.Decimal(10, 2) @map("max_discount_amount")
+  startDate          DateTime      @map("start_date")
+  endDate            DateTime      @map("end_date")
+  usageLimit         Int?          @map("usage_limit")
+  userLimit          Int?          @map("user_limit")
+  usageCount         Int           @default(0) @map("usage_count")
+  applicableRoomIds  Json?         @map("applicable_room_ids")
+  isActive           Boolean       @default(true) @map("is_active")
+  bookings           Booking[]
+  usages             CouponUsage[]
+  createdAt          DateTime      @default(now()) @map("created_at")
+  updatedAt          DateTime      @updatedAt @map("updated_at")
+
+  @@index([code])
+  @@index([isActive])
+  @@map("coupons")
+}
+
+model CouponUsage {
+  id        String   @id @default(uuid())
+  couponId  String   @map("coupon_id")
+  coupon    Coupon   @relation(fields: [couponId], references: [id])
+  userId    String   @map("user_id")
+  bookingId String   @map("booking_id")
+  usedAt    DateTime @default(now()) @map("used_at")
+
+  @@unique([couponId, userId, bookingId])
+  @@map("coupon_usages")
+}
+
+// ─── Reviews ──────────────────────────────────────────────────
+model Review {
+  id                  String   @id @default(uuid())
+  userId              String   @map("user_id")
+  user                User     @relation(fields: [userId], references: [id])
+  bookingId           String   @unique @map("booking_id")
+  overallRating       Int      @map("overall_rating")
+  cleanlinessRating   Int      @map("cleanliness_rating")
+  serviceRating       Int      @map("service_rating")
+  locationRating      Int      @map("location_rating")
+  foodRating          Int      @map("food_rating")
+  valueRating         Int      @map("value_rating")
+  comment             String   @db.Text
+  status              String   @default("PENDING")
+  isFeatured          Boolean  @default(false) @map("is_featured")
+  adminReply          String?  @db.Text @map("admin_reply")
+  repliedAt           DateTime? @map("replied_at")
+  createdAt           DateTime @default(now()) @map("created_at")
+  updatedAt           DateTime @updatedAt @map("updated_at")
+
+  @@index([status])
+  @@index([userId])
+  @@map("reviews")
+}
+
+// ─── Leads ────────────────────────────────────────────────────
+model Lead {
+  id             String    @id @default(uuid())
+  name           String
+  email          String
+  phone          String?
+  subject        String
+  message        String    @db.Text
+  travelDate     DateTime? @map("travel_date")
+  numberOfGuests Int?      @map("number_of_guests")
+  status         String    @default("NEW")
+  assignedTo     String?   @map("assigned_to")
+  notes          LeadNote[]
+  createdAt      DateTime  @default(now()) @map("created_at")
+  updatedAt      DateTime  @updatedAt @map("updated_at")
+
+  @@index([status])
+  @@index([email])
+  @@map("leads")
+}
+
+model LeadNote {
+  id        String   @id @default(uuid())
+  leadId    String   @map("lead_id")
+  lead      Lead     @relation(fields: [leadId], references: [id], onDelete: Cascade)
+  note      String   @db.Text
+  createdBy String   @map("created_by")
+  createdAt DateTime @default(now()) @map("created_at")
+
+  @@map("lead_notes")
+}
+
+// ─── Media ────────────────────────────────────────────────────
+model Media {
+  id          String   @id @default(uuid())
+  filename    String
+  originalName String  @map("original_name")
+  url         String
+  publicId    String   @map("public_id")
+  mimeType    String   @map("mime_type")
+  size        Int
+  width       Int?
+  height      Int?
+  altText     String?  @map("alt_text")
+  title       String?
+  caption     String?
+  category    String?
+  tags        Json?
+  uploadedBy  String   @map("uploaded_by")
+  createdAt   DateTime @default(now()) @map("created_at")
+
+  @@index([category])
+  @@map("media")
+}
+
+// ─── CMS ──────────────────────────────────────────────────────
+model Page {
+  id        String        @id @default(uuid())
+  slug      String        @unique
+  title     String
+  status    String        @default("DRAFT")
+  sections  PageSection[]
+  seo       SeoMetadata?
+  createdAt DateTime      @default(now()) @map("created_at")
+  updatedAt DateTime      @updatedAt @map("updated_at")
+
+  @@map("pages")
+}
+
+model PageSection {
+  id        String   @id @default(uuid())
+  pageId    String   @map("page_id")
+  page      Page     @relation(fields: [pageId], references: [id], onDelete: Cascade)
+  blockType String   @map("block_type")
+  key       String
+  data      Json
+  isActive  Boolean  @default(true) @map("is_active")
+  sortOrder Int      @default(0) @map("sort_order")
+  updatedBy String?  @map("updated_by")
+  createdAt DateTime @default(now()) @map("created_at")
+  updatedAt DateTime @updatedAt @map("updated_at")
+
+  @@unique([pageId, key])
+  @@map("page_sections")
+}
+
+model SeoMetadata {
+  id               String   @id @default(uuid())
+  pageId           String   @unique @map("page_id")
+  page             Page     @relation(fields: [pageId], references: [id], onDelete: Cascade)
+  title            String?
+  description      String?  @db.Text
+  ogTitle          String?  @map("og_title")
+  ogDescription    String?  @db.Text @map("og_description")
+  ogImage          String?  @map("og_image")
+  canonicalUrl     String?  @map("canonical_url")
+  keywords         String?  @db.Text
+  structuredData   Json?    @map("structured_data")
+  updatedAt        DateTime @updatedAt @map("updated_at")
+
+  @@map("seo_metadata")
+}
+
+// ─── Notifications ────────────────────────────────────────────
+model Notification {
+  id        String   @id @default(uuid())
+  userId    String   @map("user_id")
+  user      User     @relation(fields: [userId], references: [id], onDelete: Cascade)
+  type      String
+  title     String
+  message   String   @db.Text
+  isRead    Boolean  @default(false) @map("is_read")
+  link      String?
+  metadata  Json?
+  createdAt DateTime @default(now()) @map("created_at")
+
+  @@index([userId])
+  @@index([isRead])
+  @@map("notifications")
+}
+
+model EmailLog {
+  id         String   @id @default(uuid())
+  to         String
+  subject    String
+  template   String
+  status     String   @default("SENT")
+  error      String?  @db.Text
+  metadata   Json?
+  sentAt     DateTime @default(now()) @map("sent_at")
+
+  @@map("email_logs")
+}
+
+// ─── Housekeeping ─────────────────────────────────────────────
+model HousekeepingTask {
+  id          String   @id @default(uuid())
+  roomId      String   @map("room_id")
+  task        String
+  assignedTo  String?  @map("assigned_to")
+  priority    String   @default("NORMAL")
+  status      String   @default("PENDING")
+  dueTime     DateTime? @map("due_time")
+  notes       String?  @db.Text
+  completedAt DateTime? @map("completed_at")
+  createdBy   String   @map("created_by")
+  createdAt   DateTime @default(now()) @map("created_at")
+  updatedAt   DateTime @updatedAt @map("updated_at")
+
+  @@index([roomId])
+  @@index([status])
+  @@map("housekeeping_tasks")
+}
+
+// ─── Tax Rules ────────────────────────────────────────────────
+model TaxRule {
+  id            String   @id @default(uuid())
+  name          String
+  taxType       String   @map("tax_type")
+  percentage    Decimal  @db.Decimal(5, 2)
+  applicableTo  String   @map("applicable_to")
+  isActive      Boolean  @default(true) @map("is_active")
+  effectiveFrom DateTime @map("effective_from")
+  effectiveTo   DateTime? @map("effective_to")
+  createdAt     DateTime @default(now()) @map("created_at")
+  updatedAt     DateTime @updatedAt @map("updated_at")
+
+  @@map("tax_rules")
+}
+
+// ─── Audit Logs ───────────────────────────────────────────────
+model AuditLog {
+  id            String   @id @default(uuid())
+  adminId       String   @map("admin_id")
+  adminEmail    String   @map("admin_email")
+  action        String
+  entity        String
+  entityId      String   @map("entity_id")
+  previousValue Json?    @map("previous_value")
+  newValue      Json?    @map("new_value")
+  ipAddress     String?  @map("ip_address")
+  userAgent     String?  @map("user_agent")
+  createdAt     DateTime @default(now()) @map("created_at")
+
+  @@index([adminId])
+  @@index([action])
+  @@index([entity])
+  @@index([createdAt])
+  @@map("audit_logs")
+}
+
+// ─── System Settings ──────────────────────────────────────────
+model SystemSetting {
+  id          String   @id @default(uuid())
+  key         String   @unique
+  value       Json
+  description String?
+  updatedBy   String?  @map("updated_by")
+  createdAt   DateTime @default(now()) @map("created_at")
+  updatedAt   DateTime @updatedAt @map("updated_at")
+
+  @@map("system_settings")
+}
