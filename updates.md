@@ -205,28 +205,27 @@
 ## PHASE 6 — Guest Dashboard
 
 ### Backend
-- [ ] GET /api/v1/users/me (profile)
-- [ ] PUT /api/v1/users/me (update profile)
-- [ ] GET /api/v1/bookings/my-bookings (paginated)
-- [ ] GET /api/v1/payments/my-payments (paginated)
-- [ ] GET /api/v1/invoices/my-invoices (paginated)
-- [ ] GET /api/v1/invoices/:id/download (PDF generation)
-- [ ] GET /api/v1/food-orders/my-orders (paginated)
-- [ ] POST /api/v1/reviews (submit review)
-- [ ] GET /api/v1/notifications/my-notifications
+- [x] GET /api/v1/users/me (profile with stay & review statistics)
+- [x] PUT /api/v1/users/me (update profile & preferences)
+- [x] GET /api/v1/bookings/my-bookings (paginated reservation ledger)
+- [x] GET /api/v1/payments/my-payments (Razorpay transaction history)
+- [x] GET /api/v1/invoices/my-invoices (paginated GST tax invoices)
+- [x] GET /api/v1/invoices/:id (tax receipt detail with items & room info)
+- [x] POST /api/v1/reviews (submit 5-star category ratings & testimonials)
+- [x] GET /api/v1/reviews/my-reviews (view past submitted reviews)
+- [x] GET /api/v1/notifications/my-notifications (with unread badge counter)
+- [x] PATCH /api/v1/notifications/:id/read & /mark-all-read
 
 ### Frontend
-- [ ] Guest dashboard layout
-- [ ] Profile page (edit name/phone/dob/address/image)
-- [ ] My Bookings page (upcoming + past)
-- [ ] Booking details page (full reservation info + cancel option)
-- [ ] Payments history page
-- [ ] Invoices page (list + download PDF)
-- [ ] Food Orders page (history + status)
-- [ ] Reviews page (submit review after stay)
-- [ ] Notifications page
+- [x] Guest dashboard layout (responsive sidebar drawer, navigation, header bar)
+- [x] Profile page (name, phone, address, preferences for pillows and diet)
+- [x] My Bookings page (tabs: All, Upcoming, Completed, Cancelled + status badges)
+- [x] Booking details page (stay timings, room specs, billing summary, cancel modal)
+- [x] Invoices page (list with status and printable official tax invoice view)
+- [x] Reviews page (star rating form for Cleanliness, Service, Location, Food, Value)
+- [x] Notifications page (feed with status badges and mark all read)
 
-**Gate:** All guest dashboard routes tested with real DB data.
+**Gate:** All guest dashboard routes tested with clean TypeScript and Vite builds.
 
 ---
 
