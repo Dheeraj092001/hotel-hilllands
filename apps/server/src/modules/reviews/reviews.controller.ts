@@ -76,4 +76,56 @@ export class ReviewsController {
       });
     }
   }
+
+  static async getAllReviewsAdmin(req: AuthenticatedRequest, res: Response): Promise<void> {
+    try {
+      const status = req.query.status as string;
+      const reviews = await ReviewsService.getAllReviewsAdmin(status);
+      res.status(200).json({
+        success: true,
+        data: reviews,
+        message: "Admin reviews retrieved",
+      });
+    } catch (error: any) {
+      res.status(500).json({
+        success: false,
+        message: error.message || "Failed to retrieve reviews",
+      });
+    }
+  }
+
+  static async updateStatus(req: AuthenticatedRequest, res: Response): Promise<void> {
+    try {
+      const { status } = req.body;
+      const review = await ReviewsService.updateReviewStatus(req.params.id, status);
+      res.status(200).json({
+        success: true,
+        data: review,
+        message: "Review status updated",
+      });
+    } catch (error: any) {
+      res.status(400).json({
+        success: false,
+        message: error.message || "Failed to update review status",
+      });
+    }
+  }
+
+  static async reply(req: AuthenticatedRequest, res: Response): Promise<void> {
+    try {
+      const { adminReply } = req.body;
+      const review = await ReviewsService.replyToReview(req.params.id, adminReply);
+      res.status(200).json({
+        success: true,
+        data: review,
+        message: "Reply added to review",
+      });
+    } catch (error: any) {
+      res.status(400).json({
+        success: false,
+        message: error.message || "Failed to reply to review",
+      });
+    }
+  }
 }
+

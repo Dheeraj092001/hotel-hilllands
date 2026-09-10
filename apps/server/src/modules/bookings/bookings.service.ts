@@ -240,4 +240,104 @@ export class BookingsService {
       refundAmount,
     };
   }
+
+  /**
+   * Admin: List all bookings with search, status filter, and pagination
+   */
+  static async getAllBookingsAdmin(params: {
+    page?: number;
+    limit?: number;
+    status?: string;
+    search?: string;
+  }) {
+    const page = params.page || 1;
+    const limit = params.limit || 20;
+    const skip = (page - 1) * limit;
+
+    const where: any = {};
+    if (params.status && params.status !== "ALL") {
+      where.status = params.status;
+    }
+    if (params.search) {
+      where.OR = [
+        { confirmationNumber: { contains: params.search } },
+        { guestName: { contains: params.search } },
+        { guestEmail: { contains: params.search } },
+        { guestPhone: { contains: params.search } },
+        { user: { name: { contains: params.search } } },
+        { room: { name: { contains: params.search } } },
+      ];
+    }
+
+    const [bookings, total] = await Promise.all([
+      prisma.booking.findMany({
+        where,
+        include: {
+          room: { select: { name: true, roomNumber: true, type: { select: { name: true } } } },
+          user: { select: { name: true, email: true, phone: true } },
+          payments: { select: { id: true, amount: true, status: true, transactionId: true } },
+          invoice: { select: { id: true, invoiceNumber: true, status: true } },
+        },
+        orderBy: { createdAt: "desc" },
+        skip,
+        take: limit,
+      }),
+      prisma.booking.count({ where }),
+    ]);
+
+    return {
+      bookings,
+      meta: {
+        page,
+        limit,
+        total,
+        totalPages: Math.ceil(total / limit),
+      },
+    };
+  }
+
+  /**
+   * Admin: Update booking status with controlled transitions
+   */
+  static async updateBookingStatus(id: string, status: string, notes?: string) {
+    const existing = await prisma.booking.findUnique({ where: { id } });
+    if (!existing) {
+      throw new NotFoundError("Booking reservation not found");
+    }
+
+    const updateData: any = { status };
+    if (status === "CHECKED_IN" && !existing.checkedInAt) {
+      updateData.checkedInAt = new Date();
+    }
+    if (status === "CHECKED_OUT" && !existing.checkedOutAt) {
+      updateData.checkedOutAt = new Date();
+    }
+    if (notes) {
+      updateData.internalNotes = notes;
+    }
+
+    return prisma.booking.update({
+      where: { id },
+      data: updateData,
+      include: {
+        room: { select: { name: true, roomNumber: true } },
+        user: { select: { name: true, email: true } },
+      },
+    });
+  }
+
+  /**
+   * Admin: Check in guest workflow
+   */
+  static async checkInGuest(id: string) {
+    return this.updateBookingStatus(id, "CHECKED_IN");
+  }
+
+  /**
+   * Admin: Check out guest workflow
+   */
+  static async checkOutGuest(id: string) {
+    return this.updateBookingStatus(id, "CHECKED_OUT");
+  }
 }
+

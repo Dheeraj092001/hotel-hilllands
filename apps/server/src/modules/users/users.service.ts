@@ -116,4 +116,76 @@ export class UsersService {
 
     return updated;
   }
+
+  static async getAllGuestsAdmin(params: { search?: string; page?: number; limit?: number }) {
+    const page = params.page || 1;
+    const limit = params.limit || 20;
+    const skip = (page - 1) * limit;
+
+    const where: any = { deletedAt: null };
+    if (params.search) {
+      where.OR = [
+        { name: { contains: params.search } },
+        { email: { contains: params.search } },
+        { phone: { contains: params.search } },
+      ];
+    }
+
+    const [users, total] = await Promise.all([
+      prisma.user.findMany({
+        where,
+        select: {
+          id: true,
+          name: true,
+          email: true,
+          phone: true,
+          city: true,
+          state: true,
+          country: true,
+          createdAt: true,
+          _count: {
+            select: { bookings: true, reviews: true },
+          },
+        },
+        orderBy: { createdAt: "desc" },
+        skip,
+        take: limit,
+      }),
+      prisma.user.count({ where }),
+    ]);
+
+    return {
+      users,
+      meta: {
+        page,
+        limit,
+        total,
+        totalPages: Math.ceil(total / limit),
+      },
+    };
+  }
+
+  static async getGuestDetailsAdmin(id: string) {
+    const user = await prisma.user.findUnique({
+      where: { id },
+      include: {
+        bookings: {
+          include: {
+            room: { select: { name: true, roomNumber: true } },
+          },
+          orderBy: { createdAt: "desc" },
+        },
+        reviews: {
+          orderBy: { createdAt: "desc" },
+        },
+      },
+    });
+
+    if (!user) {
+      throw new NotFoundError("Guest profile not found");
+    }
+
+    return user;
+  }
 }
+
