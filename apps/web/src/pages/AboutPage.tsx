@@ -65,7 +65,7 @@ export default function AboutPage() {
           <div className="lg:col-span-6 relative">
             <div className="aspect-[4/5] rounded-sm overflow-hidden shadow-2xl border-4 border-white">
               <img
-                src="https://images.unsplash.com/photo-1548013146-72479768bada?auto=format&fit=crop&w=1000&q=80"
+                src="/images/shimla.jpeg"
                 alt="Hotel Newlands Historical Estate"
                 className="w-full h-full object-cover"
               />

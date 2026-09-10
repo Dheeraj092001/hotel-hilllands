@@ -7,6 +7,16 @@ import { Button } from "../../components/ui/Button";
 export const FinalCTASection: React.FC = () => {
   return (
     <section className="relative py-28 lg:py-36 bg-deep-forest text-warm-ivory overflow-hidden">
+      {/* Background Mountain Photo Overlay */}
+      <div className="absolute inset-0 z-0">
+        <img
+          src="/images/shimla.jpeg"
+          alt="Hotel Newlands Shimla Retreat"
+          className="w-full h-full object-cover object-center opacity-15"
+        />
+        <div className="absolute inset-0 bg-gradient-to-t from-deep-forest via-deep-forest/80 to-deep-forest/90" />
+      </div>
+
       {/* Mountain Silhouettes Overlay */}
       <div className="absolute inset-0 opacity-10 bg-[radial-gradient(#D9C7A3_1px,transparent_1px)] [background-size:32px_32px]" />
 

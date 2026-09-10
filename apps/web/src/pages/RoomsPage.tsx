@@ -31,8 +31,7 @@ export const ROOMS_DATA: RoomItem[] = [
     size: "680 sq ft",
     capacity: 3,
     view: "Snow Peak & Valley",
-    image:
-      "https://images.unsplash.com/photo-1590490360182-c33d57733427?auto=format&fit=crop&w=1000&q=80",
+    image: "/images/ultra-luxury.jpeg",
     amenities: ["Private Fireplace", "Heritage Teak Balcony", "Butler Service", "Clawfoot Tub"],
     features: ["King Bed", "Valley Panorama", "Walk-in Closet", "Nespresso Machine"],
   },
@@ -45,8 +44,7 @@ export const ROOMS_DATA: RoomItem[] = [
     size: "450 sq ft",
     capacity: 2,
     view: "Ancient Deodar Grove",
-    image:
-      "https://images.unsplash.com/photo-1618773928121-c32242e63f39?auto=format&fit=crop&w=1000&q=80",
+    image: "/images/luxury-suit (1).jpeg",
     amenities: ["King Feather Bed", "Forest View Alcove", "Artisan Bath Salts", "Rain Shower"],
     features: ["King Bed", "Woodland Quiet", "Organic Minibar", "Heated Bathroom"],
   },
@@ -59,8 +57,7 @@ export const ROOMS_DATA: RoomItem[] = [
     size: "560 sq ft",
     capacity: 3,
     view: "Panoramic Ridge View",
-    image:
-      "https://images.unsplash.com/photo-1566665797739-1674de7a421a?auto=format&fit=crop&w=1000&q=80",
+    image: "/images/premium.jpeg",
     amenities: ["Cast-Iron Wood Stove", "Sunset Vista Terrace", "Heated Floors", "Daybed Nook"],
     features: ["King + Daybed", "Sunset Facing", "Living Alcove", "French Press"],
   },
@@ -73,8 +70,7 @@ export const ROOMS_DATA: RoomItem[] = [
     size: "820 sq ft",
     capacity: 4,
     view: "Private Forest & Ridge",
-    image:
-      "https://images.unsplash.com/photo-1582719478250-c89cae4dc85b?auto=format&fit=crop&w=1000&q=80",
+    image: "/images/ultra-luxury (4).jpeg",
     amenities: ["Standalone Cottage", "Private Lawn Veranda", "Dual Fireplaces", "Whirlpool Spa"],
     features: ["Master King + Twin", "Private Garden", "Butler Pantry", "Bose Sound System"],
   },
@@ -87,8 +83,7 @@ export const ROOMS_DATA: RoomItem[] = [
     size: "380 sq ft",
     capacity: 2,
     view: "Courtyard & Pines",
-    image:
-      "https://images.unsplash.com/photo-1595526114035-0d45ed16cfbf?auto=format&fit=crop&w=1000&q=80",
+    image: "/images/premium3.jpeg",
     amenities: ["Original Teak Floors", "Reading Bay Window", "Herbal Tea Atelier", "Walk-in Shower"],
     features: ["Queen Bed", "Quiet Garden View", "Writing Desk", "Plush Robes"],
   },
@@ -101,8 +96,7 @@ export const ROOMS_DATA: RoomItem[] = [
     size: "950 sq ft",
     capacity: 5,
     view: "360° Valley & Himalayan Vistas",
-    image:
-      "https://images.unsplash.com/photo-1578683010236-d716f9a3f461?auto=format&fit=crop&w=1000&q=80",
+    image: "/images/luxury-suit (4).jpeg",
     amenities: ["2 En-Suite Bedrooms", "Central Fireplace Salon", "Dining Table for 6", "Private Butler"],
     features: ["2 King Beds + Sofa", "Dual Balconies", "Powder Room", "Curated Library"],
   },

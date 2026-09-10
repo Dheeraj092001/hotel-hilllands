@@ -25,7 +25,7 @@ const OFFERS: Offer[] = [
     title: "The Himalayan Honeymoon Sanctuary",
     tagline: "Celebrate romance amidst roaring cedar hearths and panoramic snow-peaked vistas.",
     discount: "Complimentary Suite Upgrade & Dining",
-    image: "https://images.unsplash.com/photo-1590490360182-c33d57733427?auto=format&fit=crop&w=800&q=80",
+    image: "/images/ultra-luxury (1).jpeg",
     validTill: "Valid Year-Round",
     inclusions: [
       "Bottle of Chilled Sparkling Wine & Handcrafted Chocolates",
@@ -41,7 +41,7 @@ const OFFERS: Offer[] = [
     title: "Winter Snow & Hearth Retreat",
     tagline: "Stay 3 nights for the price of 2 during the enchanting Himalayan winter snowfall season.",
     discount: "33% Off (Stay 3, Pay 2)",
-    image: "https://images.unsplash.com/photo-1548013146-72479768bada?auto=format&fit=crop&w=800&q=80",
+    image: "/images/shimla.jpeg",
     validTill: "Valid Nov 15 – Mar 31",
     inclusions: [
       "Complimentary 3rd Night Accommodation",
@@ -56,7 +56,7 @@ const OFFERS: Offer[] = [
     title: "Alpine Sabbatical & Writing Retreat",
     tagline: "Extended tranquility for thinkers, writers, and remote leaders seeking mountain clarity.",
     discount: "25% Off Stays of 7+ Nights",
-    image: "https://images.unsplash.com/photo-1518780664697-55e3ad937233?auto=format&fit=crop&w=800&q=80",
+    image: "/images/balcony-view.jpeg",
     validTill: "Valid for Stays 7 Nights or More",
     inclusions: [
       "25% Off Best Available Rates",
@@ -72,7 +72,7 @@ const OFFERS: Offer[] = [
     title: "Early Bird Mountain Reserve",
     tagline: "Plan your summer getaway ahead and unlock exclusive guaranteed preferred suite allocations.",
     discount: "15% Off Any Suite",
-    image: "https://images.unsplash.com/photo-1566665797739-1674de7a421a?auto=format&fit=crop&w=800&q=80",
+    image: "/images/luxury-suit (1).jpeg",
     validTill: "Book 45 Days in Advance",
     inclusions: [
       "15% Direct Booking Discount",
