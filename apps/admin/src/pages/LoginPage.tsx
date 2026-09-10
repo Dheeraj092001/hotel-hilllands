@@ -1,0 +1,99 @@
+import React, { useState } from "react";
+import { useNavigate } from "react-router-dom";
+import { signInWithEmailAndPassword } from "firebase/auth";
+import { toast } from "sonner";
+import { ShieldCheck, Lock, Mail, Loader2, ArrowRight } from "lucide-react";
+import { auth } from "../lib/firebase";
+import { useAdminAuthStore } from "../stores/authStore";
+
+export default function LoginPage() {
+  const navigate = useNavigate();
+  const { setUser } = useAdminAuthStore();
+  const [email, setEmail] = useState("");
+  const [password, setPassword] = useState("");
+  const [loading, setLoading] = useState(false);
+
+  const handleLogin = async (e: React.FormEvent) => {
+    e.preventDefault();
+    setLoading(true);
+
+    try {
+      const userCred = await signInWithEmailAndPassword(auth, email, password);
+      setUser({
+        id: userCred.user.uid,
+        name: userCred.user.displayName || "Admin Member",
+        email: userCred.user.email || email,
+        role: "SUPER_ADMIN",
+        permissions: ["all"],
+      });
+      toast.success("Welcome back to Hotel Newlands ERP");
+      navigate("/");
+    } catch (err: any) {
+      toast.error(err.message || "Invalid administrative credentials");
+    } finally {
+      setLoading(false);
+    }
+  };
+
+  return (
+    <div className="min-h-screen bg-[#0B0F12] flex items-center justify-center p-4">
+      <div className="max-w-md w-full bg-[#12171C] rounded-2xl border border-white/10 p-8 space-y-6 shadow-2xl">
+        <div className="text-center space-y-2">
+          <div className="w-12 h-12 rounded-xl bg-[#183C32] border border-[#D9C7A3]/40 flex items-center justify-center text-[#D9C7A3] font-serif font-bold text-xl mx-auto shadow-inner">
+            N
+          </div>
+          <h1 className="font-serif text-2xl font-bold text-white tracking-wide">HOTEL NEWLANDS</h1>
+          <p className="text-xs text-[#D9C7A3] tracking-widest uppercase">Administrative Command Portal</p>
+        </div>
+
+        <form onSubmit={handleLogin} className="space-y-4">
+          <div>
+            <label className="block text-xs font-semibold text-stone-300 mb-1.5">Staff Email</label>
+            <div className="relative">
+              <Mail className="w-4 h-4 text-stone-500 absolute left-3 top-1/2 -translate-y-1/2" />
+              <input
+                type="email"
+                required
+                value={email}
+                onChange={(e) => setEmail(e.target.value)}
+                placeholder="staff@hotelnewlands.com"
+                className="w-full pl-9 pr-3.5 py-2.5 rounded-lg bg-[#0B0F12] border border-white/10 text-xs text-white focus:ring-1 focus:ring-[#D9C7A3]"
+              />
+            </div>
+          </div>
+
+          <div>
+            <label className="block text-xs font-semibold text-stone-300 mb-1.5">Staff Password</label>
+            <div className="relative">
+              <Lock className="w-4 h-4 text-stone-500 absolute left-3 top-1/2 -translate-y-1/2" />
+              <input
+                type="password"
+                required
+                value={password}
+                onChange={(e) => setPassword(e.target.value)}
+                placeholder="••••••••••••"
+                className="w-full pl-9 pr-3.5 py-2.5 rounded-lg bg-[#0B0F12] border border-white/10 text-xs text-white focus:ring-1 focus:ring-[#D9C7A3]"
+              />
+            </div>
+          </div>
+
+          <button
+            type="submit"
+            disabled={loading}
+            className="w-full py-2.5 rounded-lg bg-[#183C32] text-[#D9C7A3] text-xs font-semibold hover:bg-[#315C4A] border border-[#D9C7A3]/40 transition-colors flex items-center justify-center gap-2 shadow-sm disabled:opacity-50 mt-2"
+          >
+            {loading ? <Loader2 className="w-4 h-4 animate-spin" /> : null}
+            <span>Access Estate ERP</span>
+            <ArrowRight className="w-3.5 h-3.5" />
+          </button>
+        </form>
+
+        <div className="text-center pt-2 border-t border-white/5">
+          <span className="text-[11px] text-stone-500">
+            Shimla Heritage Estate Operations • Protected System
+          </span>
+        </div>
+      </div>
+    </div>
+  );
+}

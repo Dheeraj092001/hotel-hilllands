@@ -134,4 +134,44 @@ export class BookingsController {
     const result = await BookingsService.cancelBooking(id, req.user.id, reason);
     return successResponse(res, result, "Reservation cancelled successfully");
   }
+
+  static async getAllBookingsAdmin(req: AuthenticatedRequest, res: Response) {
+    const page = Number(req.query.page) || 1;
+    const limit = Number(req.query.limit) || 20;
+    const status = req.query.status as string;
+    const search = req.query.search as string;
+
+    const result = await BookingsService.getAllBookingsAdmin({
+      page,
+      limit,
+      status,
+      search,
+    });
+    return successResponse(res, result, "Admin bookings retrieved");
+  }
+
+  static async updateStatus(req: AuthenticatedRequest, res: Response) {
+    const { id } = req.params;
+    const { status, notes } = req.body;
+
+    if (!status) {
+      throw new AppError("Status is required", 400);
+    }
+
+    const updated = await BookingsService.updateBookingStatus(id, status, notes);
+    return successResponse(res, updated, "Booking status updated successfully");
+  }
+
+  static async checkInGuest(req: AuthenticatedRequest, res: Response) {
+    const { id } = req.params;
+    const updated = await BookingsService.checkInGuest(id);
+    return successResponse(res, updated, "Guest checked in successfully");
+  }
+
+  static async checkOutGuest(req: AuthenticatedRequest, res: Response) {
+    const { id } = req.params;
+    const updated = await BookingsService.checkOutGuest(id);
+    return successResponse(res, updated, "Guest checked out successfully");
+  }
 }
+

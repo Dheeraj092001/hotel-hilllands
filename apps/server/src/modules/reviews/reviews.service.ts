@@ -117,4 +117,43 @@ export class ReviewsService {
 
     return reviews;
   }
+
+  static async getAllReviewsAdmin(status?: string) {
+    const where: any = {};
+    if (status && status !== "ALL") {
+      where.status = status;
+    }
+
+    return prisma.review.findMany({
+      where,
+      include: {
+        user: { select: { name: true, email: true } },
+        booking: {
+          select: {
+            confirmationNumber: true,
+            room: { select: { name: true, roomNumber: true } },
+          },
+        },
+      },
+      orderBy: { createdAt: "desc" },
+    });
+  }
+
+  static async updateReviewStatus(id: string, status: string) {
+    return prisma.review.update({
+      where: { id },
+      data: { status },
+    });
+  }
+
+  static async replyToReview(id: string, adminReply: string) {
+    return prisma.review.update({
+      where: { id },
+      data: {
+        adminReply,
+        repliedAt: new Date(),
+      },
+    });
+  }
 }
+

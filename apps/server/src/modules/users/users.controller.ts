@@ -58,4 +58,42 @@ export class UsersController {
       });
     }
   }
+
+  static async getAllGuests(req: AuthenticatedRequest, res: Response): Promise<void> {
+    try {
+      const page = Number(req.query.page) || 1;
+      const limit = Number(req.query.limit) || 20;
+      const search = req.query.search as string;
+
+      const result = await UsersService.getAllGuestsAdmin({ page, limit, search });
+      res.status(200).json({
+        success: true,
+        data: result.users,
+        meta: result.meta,
+        message: "Guests retrieved successfully",
+      });
+    } catch (error: any) {
+      res.status(500).json({
+        success: false,
+        message: error.message || "Failed to retrieve guests",
+      });
+    }
+  }
+
+  static async getGuestDetails(req: AuthenticatedRequest, res: Response): Promise<void> {
+    try {
+      const user = await UsersService.getGuestDetailsAdmin(req.params.id);
+      res.status(200).json({
+        success: true,
+        data: user,
+        message: "Guest details retrieved successfully",
+      });
+    } catch (error: any) {
+      res.status(error.statusCode || 500).json({
+        success: false,
+        message: error.message || "Failed to retrieve guest details",
+      });
+    }
+  }
 }
+

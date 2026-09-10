@@ -1,5 +1,10 @@
-import { Router } from 'express';
-const router = Router();
-// TODO: implement analytics routes
-router.get('/', (_req, res) => res.json({ success: true, message: 'analytics module placeholder', data: [] }));
+import { Router } from "express";
+import { AnalyticsController } from "./analytics.controller";
+import { authenticate } from "../../middleware/authenticate";
+import { requireAdmin } from "../../middleware/authorize";
+
+const router: Router = Router();
+
+router.get("/dashboard", authenticate, requireAdmin, AnalyticsController.getDashboardOverview);
+
 export default router;

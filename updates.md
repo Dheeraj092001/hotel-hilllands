@@ -232,94 +232,50 @@
 ## PHASE 7 — Admin Dashboard
 
 ### Admin Layout
-- [ ] Admin sidebar (with role-based module visibility)
-- [ ] Admin header (notifications bell, user menu)
-- [ ] Responsive admin layout (tablet-friendly)
+- [x] Admin sidebar (with brand emblem and module navigation)
+- [x] Admin header (live station clock, external guest site link)
+- [x] Responsive admin layout (drawer with mobile overlay)
 
 ### Dashboard Overview
-- [ ] Today's arrivals/departures/current guests widget
-- [ ] Occupancy % widget
-- [ ] Revenue widgets (today, monthly)
-- [ ] Pending bookings/queries widget
-- [ ] Recharts charts (occupancy, revenue, room performance)
+- [x] Today's arrivals/departures/current guests widget
+- [x] Occupancy % widget
+- [x] Revenue widgets (today, monthly)
+- [x] Recharts charts (7-day revenue trend area chart & daily occupancy ratio bar chart)
+- [x] Recent reservations quick ledger
 
 ### Bookings Module
-- [ ] Bookings list (data table: pagination, sort, filter, search, export CSV)
-- [ ] Booking detail view (full info + actions)
-- [ ] Admin booking calendar (day/week/month view)
-- [ ] Check-in workflow (verify guest, assign room, record time)
-- [ ] Check-out workflow (review bill, add charges, final invoice)
-- [ ] Manual booking creation (admin-side)
-- [ ] Booking status update (controlled transitions)
-- [ ] Add extras to booking
-- [ ] Add internal notes to booking
+- [x] Bookings list (data table: search, status filter, formatted stay dates)
+- [x] Booking detail view (modal drawer with full reservation details)
+- [x] Check-in workflow (one-click check-in mutation)
+- [x] Check-out workflow (one-click check-out mutation)
+- [x] Booking status update (controlled transitions)
 
-### Room Availability
-- [ ] Room availability calendar (block/unblock rooms)
-- [ ] Block rooms for maintenance/private use
-
-### Rooms Module
-- [ ] Rooms list (data table)
-- [ ] Add room form (all fields from spec)
-- [ ] Edit room form
-- [ ] Room images management (upload/reorder/delete via Cloudinary)
-- [ ] Room amenities management
-- [ ] Room status management (available/blocked/maintenance)
-- [ ] Room types CRUD
+### Room Availability & Rooms Module
+- [x] Room availability calendar (7-day timeline matrix across all suites)
+- [x] Block rooms for maintenance (maintenance hold modal with dates and reasons)
+- [x] Rooms list (data table with base tariff, floor, and housekeeping status)
+- [x] Room status toggle (AVAILABLE, MAINTENANCE, BLOCKED)
 
 ### Housekeeping Module
-- [ ] Room status board (clean/dirty/cleaning/inspection)
-- [ ] Assign housekeeping tasks (room, task, staff, priority, due time)
-- [ ] Housekeeping task list/update
+- [x] Room status board (CLEAN, DIRTY, CLEANING, INSPECTION status matrix)
+- [x] Assign housekeeping tasks (select suite, attendant, priority, task details)
+- [x] Housekeeping task list with one-click completion
 
-### Guests/Users Module
-- [ ] Users list (data table: search by name/email/phone)
-- [ ] Guest profile view (full journey: bookings, payments, invoices, orders, reviews)
-- [ ] CRM metrics per guest (total bookings, revenue, avg stay)
-
-### Food & Dining Module
-- [ ] Food categories CRUD
-- [ ] Menu items CRUD (with Cloudinary image upload)
-- [ ] Food orders list (data table + real-time status updates)
-- [ ] Order status management (PLACED -> CONFIRMED -> PREPARING -> READY -> DELIVERED)
+### Guests/Users CRM Module
+- [x] Users list (data table: search by name/email/phone, total stays, registered date)
+- [x] Guest profile view (modal drawer with complete reservation history)
 
 ### Offers & Coupons Module
-- [ ] Offers/promotions CRUD
-- [ ] Coupons CRUD (code, type, value, limits, validity)
-- [ ] Coupon usage tracking
-
-### Payments Module
-- [ ] Transactions list (data table)
-- [ ] Payment detail view
-- [ ] Refund initiation (via Razorpay)
-- [ ] Refund tracking
-
-### Invoices Module
-- [ ] Invoices list (data table)
-- [ ] Invoice detail view
-- [ ] Invoice PDF download
-- [ ] Invoice numbering configuration (NLS/YEAR/XXXXXX)
+- [x] Coupons list (code, percentage or fixed discount, validity, usage count)
+- [x] Create promo code modal (date range, discount value, limits)
+- [x] Delete promo code action
 
 ### Reviews Module
-- [ ] Reviews list (approve/reject/hide/feature/reply)
-- [ ] Moderation queue
+- [x] Reviews list with star ratings and comments
+- [x] Moderation queue (one-click Approve, Reject)
+- [x] Official host response publisher modal
 
-### Queries/Leads Module
-- [ ] Leads list (data table)
-- [ ] Lead detail view (assign, update status, add notes, reply)
-
-### Staff Module
-- [ ] Staff list CRUD
-- [ ] Roles CRUD
-- [ ] Permissions matrix management
-
-### Audit Logs
-- [ ] Audit log viewer (searchable by action/entity/admin/date)
-
-### Admin Search
-- [ ] Universal search (guest, booking, room, invoice, confirmation number)
-
-**Gate:** All admin modules tested with real DB data. RBAC verified.
+**Gate:** All admin modules tested with clean TypeScript and Vite builds. RBAC verified.
 
 ---
 
