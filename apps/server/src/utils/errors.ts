@@ -35,8 +35,8 @@ export class ConflictError extends AppError {
 }
 
 export class BookingConflictError extends AppError {
-  constructor() {
-    super("Room is no longer available for the selected dates", 409, "BOOKING_CONFLICT");
+  constructor(message = "Room is no longer available for the selected dates") {
+    super(message, 409, "BOOKING_CONFLICT");
   }
 }
 
