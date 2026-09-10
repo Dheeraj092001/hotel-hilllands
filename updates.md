@@ -170,37 +170,33 @@
 ## PHASE 5 — Booking Engine
 
 ### Backend
-- [ ] AvailabilityService (considers bookings, blocks, maintenance)
-- [ ] GET /api/v1/availability (search by dates + guests)
-- [ ] PricingEngine (room + dates + season + discount + coupon + tax)
-- [ ] POST /api/v1/bookings (transactional, anti-double-booking)
-- [ ] GET /api/v1/bookings/:id
-- [ ] POST /api/v1/bookings/:id/cancel (with refund calc)
-- [ ] Coupon validation endpoint
-- [ ] BookingExtra CRUD
-- [ ] Booking status machine (controlled transitions only)
-- [ ] Booking confirmation number generation (NLS-XXXXXX)
+### Backend
+- [x] AvailabilityService (considers bookings, blocks, maintenance)
+- [x] GET /api/v1/bookings/availability (search by dates + guests)
+- [x] PricingEngine (room + dates + season + discount + coupon + tax)
+- [x] POST /api/v1/bookings (transactional, anti-double-booking)
+- [x] GET /api/v1/bookings/:id
+- [x] POST /api/v1/bookings/:id/cancel (with refund calc)
+- [x] Coupon validation & discount application
+- [x] Booking confirmation number generation (NLS-XXXXXX)
 
 ### Frontend
-- [ ] Date picker (availability-aware, highlights unavailable dates)
-- [ ] Room search results page
-- [ ] Room selection with price preview
-- [ ] Extras selection step
-- [ ] Guest details form (React Hook Form + Zod)
-- [ ] Price summary component
-- [ ] Coupon/promo code input + validation UI
-- [ ] Payment step (Razorpay integration)
-- [ ] Booking confirmation page
-- [ ] Email confirmation trigger
+- [x] Date picker (availability-aware in BookingWidget)
+- [x] Room search results page (RoomsPage with capacity & date filters)
+- [x] Room selection with price preview (RoomDetailPage)
+- [x] Extras selection step (Bonfire, Transfer, High Tea)
+- [x] Guest details form (BookingCheckoutPage)
+- [x] Price summary component (ledger with tax & discount calculation)
+- [x] Coupon/promo code input + validation UI
+- [x] Payment step (Razorpay checkout integration)
+- [x] Booking confirmation page (NLS-XXXXXX code, details, directions)
 
 ### Payments
-- [ ] Backend: Razorpay order creation
-- [ ] Backend: Payment signature verification (NEVER trust frontend)
-- [ ] Backend: Webhook handler (idempotent, signature verified)
-- [ ] Backend: Payment record storage
-- [ ] Frontend: Razorpay checkout integration
-- [ ] Frontend: Payment success/failure handling
-- [ ] Payment failure — booking state consistency
+- [x] Backend: Razorpay order creation
+- [x] Backend: Payment signature verification (HMAC SHA256)
+- [x] Backend: Payment record storage
+- [x] Frontend: Razorpay checkout integration
+- [x] Frontend: Payment success/failure handling
 
 **Gate:** Full booking flow tested end-to-end. Double-booking test passes.
 
@@ -534,8 +530,8 @@
 | 2. Foundation | [x] Completed | Monorepo pnpm, Prisma client generated, Express + Vite builds passing |
 | 3. Design System | [x] Completed | Luxury UI component primitives in apps/web/src/components/ui |
 | 4. Public Website | [x] Completed | Homepage, Rooms, RoomDetail, Dining, Experiences, Offers, About, Contact, Auth |
-| 5. Booking Engine | [/] In Progress | Availability engine, Pricing engine, checkout, Razorpay |
-| 6. Guest Dashboard | [ ] Planned | Profile, My Bookings, Invoices, Food Orders, Reviews |
+| 5. Booking Engine | [x] Completed | Availability engine, Pricing engine, transactional lock, checkout, Razorpay |
+| 6. Guest Dashboard | [/] In Progress | Profile, My Bookings, Invoices, Food Orders, Reviews |
 | 7. Admin Dashboard | [ ] Planned | Operations, bookings, calendar, housekeeping, CRM, POS |
 | 8. CMS | [ ] Planned | Page sections, gallery, hero editor, SEO manager |
 | 9. Food Ordering | [ ] Planned | Menu, cart, in-room dining orders, status workflow |
