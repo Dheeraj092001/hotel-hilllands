@@ -3,6 +3,7 @@ import { AvailabilityService } from "./availability.service";
 import { PricingEngine, PricingInput } from "./pricing.service";
 import { generateConfirmationNumber, generateInvoiceNumber } from "../../utils/invoiceNumber";
 import { BookingConflictError, NotFoundError, ForbiddenError, AppError } from "../../utils/errors";
+import { emailService } from "../../lib/email.service";
 
 export interface CreateBookingData extends PricingInput {
   userId: string;
@@ -22,7 +23,7 @@ export class BookingsService {
     const checkOut = new Date(data.checkOut);
 
     // Run within a Prisma transaction
-    return await prisma.$transaction(async (tx) => {
+    const createdBooking = await prisma.$transaction(async (tx) => {
       // 1. Re-verify availability inside the transaction
       const isConflicting = await tx.booking.findFirst({
         where: {
@@ -86,6 +87,7 @@ export class BookingsService {
           guestPhone: data.guestPhone,
           specialRequests: data.specialRequests,
         },
+        include: { room: true },
       });
 
       // 6. Create Booking Extras if requested
@@ -120,8 +122,40 @@ export class BookingsService {
         });
       }
 
+      // 8. Create In-App Guest Notification
+      await tx.notification.create({
+        data: {
+          userId: data.userId,
+          title: "Reservation Confirmed",
+          message: `Your reservation #${confirmationNumber} for ${booking.room.name} has been confirmed.`,
+          type: "BOOKING_CONFIRMED",
+          link: `/dashboard/bookings/${booking.id}`,
+        },
+      });
+
       return booking;
     });
+
+    // Send async confirmation email
+    const nights = Math.max(
+      1,
+      Math.round((new Date(checkOut).getTime() - new Date(checkIn).getTime()) / (1000 * 3600 * 24))
+    );
+
+    emailService.sendBookingConfirmation({
+      to: data.guestEmail,
+      guestName: data.guestName,
+      confirmationNumber: createdBooking.confirmationNumber,
+      roomName: createdBooking.room.name,
+      roomNumber: createdBooking.room.roomNumber,
+      checkIn: new Date(checkIn).toLocaleDateString("en-IN", { day: "numeric", month: "short", year: "numeric" }),
+      checkOut: new Date(checkOut).toLocaleDateString("en-IN", { day: "numeric", month: "short", year: "numeric" }),
+      nights,
+      total: Number(createdBooking.total),
+      tax: Number(createdBooking.tax),
+    }).catch((err) => console.error("Email delivery log:", err));
+
+    return createdBooking;
   }
 
   /**
@@ -233,6 +267,17 @@ export class BookingsService {
         internalNotes: `Cancelled by guest on ${now.toISOString()}. Reason: ${reason || "N/A"}. Refund calculated: ₹${refundAmount} (${refundPercentage}%)`,
       },
     });
+
+    // Create In-App Notification
+    await prisma.notification.create({
+      data: {
+        userId: booking.userId,
+        title: "Reservation Cancelled",
+        message: `Your reservation #${booking.confirmationNumber} has been cancelled. Refund of ₹${refundAmount} (${refundPercentage}%) has been queued.`,
+        type: "BOOKING_CANCELLED",
+        link: `/dashboard/bookings/${booking.id}`,
+      },
+    }).catch((err) => console.error("Notification creation error:", err));
 
     return {
       booking: updated,

@@ -103,4 +103,35 @@ export class InvoicesService {
 
     return invoice;
   }
+
+  static async getAllInvoicesAdmin(page = 1, limit = 50) {
+    const skip = (page - 1) * limit;
+    const [invoices, total] = await Promise.all([
+      prisma.invoice.findMany({
+        include: {
+          booking: {
+            include: {
+              user: { select: { name: true, email: true, phone: true } },
+              room: { select: { name: true, roomNumber: true } },
+            },
+          },
+          items: true,
+        },
+        orderBy: { issuedAt: "desc" },
+        skip,
+        take: limit,
+      }),
+      prisma.invoice.count(),
+    ]);
+
+    return {
+      invoices,
+      meta: {
+        page,
+        limit,
+        total,
+        totalPages: Math.ceil(total / limit),
+      },
+    };
+  }
 }

@@ -1,8 +1,9 @@
 import React, { useState, useEffect } from "react";
-import { Clock, MapPin, Sparkles, Utensils, Phone, Check } from "lucide-react";
+import { Clock, MapPin, Sparkles, Utensils, Phone, Check, ShoppingBag } from "lucide-react";
 import { Container } from "../components/ui/Container";
 import { Button } from "../components/ui/Button";
 import { Badge } from "../components/ui/Badge";
+import { InRoomDiningDrawer } from "../components/food/InRoomDiningDrawer";
 
 interface MenuItem {
   id: string;
@@ -128,6 +129,7 @@ const MENU_ITEMS: MenuItem[] = [
 
 export default function DiningPage() {
   const [activeTab, setActiveTab] = useState<string>("all");
+  const [diningDrawerOpen, setDiningDrawerOpen] = useState(false);
 
   useEffect(() => {
     document.title = "The Cedar Hearth Dining — Hotel Newlands Shimla";
@@ -156,10 +158,22 @@ export default function DiningPage() {
           <h1 className="font-display text-4xl sm:text-6xl font-normal text-warm-ivory mb-4 leading-tight">
             Alpine Hearth & Cellar
           </h1>
-          <p className="text-base sm:text-lg text-warm-ivory/80 font-light leading-relaxed">
+          <p className="text-base sm:text-lg text-warm-ivory/80 font-light leading-relaxed mb-6">
             Where colonial recipes meet the wild culinary riches of the Himalayas. Fresh glacier
             trout, foraged morels, orchard fruits, and fireside companionship.
           </p>
+
+          <div className="flex justify-center">
+            <Button
+              variant="gold"
+              size="lg"
+              onClick={() => setDiningDrawerOpen(true)}
+              className="shadow-xl text-deep-forest font-semibold"
+              leftIcon={<ShoppingBag className="w-4 h-4" />}
+            >
+              Order In-Room Dining & Fireside Service
+            </Button>
+          </div>
         </Container>
       </div>
 
@@ -301,6 +315,11 @@ export default function DiningPage() {
           </a>
         </div>
       </Container>
+
+      <InRoomDiningDrawer
+        isOpen={diningDrawerOpen}
+        onClose={() => setDiningDrawerOpen(false)}
+      />
     </div>
   );
 }

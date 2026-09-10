@@ -1,0 +1,53 @@
+services:
+  # Backend API Server
+  - type: web
+    name: hotel-newlands-api
+    env: node
+    plan: standard
+    buildCommand: pnpm install --frozen-lockfile && pnpm --filter @hotel/shared build && pnpm --filter @hotel/types build && pnpm --filter @hotel/validation build && pnpm --filter @hotel/server build
+    startCommand: pnpm --filter @hotel/server start
+    envVars:
+      - key: NODE_ENV
+        value: production
+      - key: PORT
+        value: 5000
+      - key: DATABASE_URL
+        sync: false
+      - key: JWT_SECRET
+        generateValue: true
+      - key: FIREBASE_PROJECT_ID
+        value: newlands-shimla
+      - key: RAZORPAY_KEY_ID
+        sync: false
+      - key: RAZORPAY_KEY_SECRET
+        sync: false
+
+  # Guest Web Portal
+  - type: web
+    name: hotel-newlands-web
+    env: static
+    buildCommand: pnpm install --frozen-lockfile && pnpm --filter @hotel/web build
+    staticPublishPath: ./apps/web/dist
+    headers:
+      - path: /*
+        name: Cache-Control
+        value: public, max-age=31536000, immutable
+    routes:
+      - type: rewrite
+        source: /*
+        destination: /index.html
+
+  # Staff & Admin ERP Dashboard
+  - type: web
+    name: hotel-newlands-admin
+    env: static
+    buildCommand: pnpm install --frozen-lockfile && pnpm --filter @hotel/admin build
+    staticPublishPath: ./apps/admin/dist
+    headers:
+      - path: /*
+        name: Cache-Control
+        value: public, max-age=31536000, immutable
+    routes:
+      - type: rewrite
+        source: /*
+        destination: /index.html

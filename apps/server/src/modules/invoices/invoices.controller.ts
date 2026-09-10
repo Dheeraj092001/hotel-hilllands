@@ -53,4 +53,25 @@ export class InvoicesController {
       });
     }
   }
+
+  static async getAllInvoicesAdmin(req: AuthenticatedRequest, res: Response): Promise<void> {
+    try {
+      const page = Math.max(1, parseInt(req.query.page as string) || 1);
+      const limit = Math.min(100, Math.max(1, parseInt(req.query.limit as string) || 50));
+
+      const result = await InvoicesService.getAllInvoicesAdmin(page, limit);
+      res.status(200).json({
+        success: true,
+        data: result.invoices,
+        meta: result.meta,
+        message: "Admin invoices retrieved successfully",
+      });
+    } catch (error: any) {
+      res.status(error.statusCode || 500).json({
+        success: false,
+        message: error.message || "Failed to retrieve invoices",
+        code: error.code || "INTERNAL_ERROR",
+      });
+    }
+  }
 }
