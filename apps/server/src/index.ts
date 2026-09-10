@@ -7,9 +7,13 @@ const PORT = env.port;
 
 async function main() {
   try {
-    // Test DB connection
-    await prisma.$connect();
-    logger.info("Database connected successfully");
+    // Attempt DB connection
+    try {
+      await prisma.$connect();
+      logger.info("Database connected successfully");
+    } catch (dbErr: any) {
+      logger.warn(`Database connection deferred (running server in preview mode): ${dbErr.message}`);
+    }
 
     const server = app.listen(PORT, () => {
       logger.info(`Hotel Newlands API running on port ${PORT} [${env.nodeEnv}]`);
