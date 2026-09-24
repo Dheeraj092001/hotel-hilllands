@@ -38,6 +38,17 @@ interface CustomCharge {
   taxRate: number;
 }
 
+const safeFormatDate = (dateVal: string | Date | undefined, fmt = "dd MMM yyyy") => {
+  if (!dateVal) return "";
+  try {
+    const d = new Date(dateVal);
+    if (isNaN(d.getTime())) return String(dateVal);
+    return format(d, fmt);
+  } catch {
+    return String(dateVal);
+  }
+};
+
 export default function InvoiceGeneratorPage() {
   const [searchParams, setSearchParams] = useSearchParams();
   const navigate = useNavigate();
@@ -365,8 +376,8 @@ export default function InvoiceGeneratorPage() {
                     <p className="font-medium text-white mt-1">{b.room.name}</p>
                     <p className="text-[11px] text-stone-400">
                       Suite #{b.room.roomNumber} •{" "}
-                      {b.checkIn ? format(new Date(b.checkIn), "d MMM") : ""} —{" "}
-                      {b.checkOut ? format(new Date(b.checkOut), "d MMM yyyy") : ""}
+                      {b.checkIn ? safeFormatDate(b.checkIn, "d MMM") : ""} —{" "}
+                      {b.checkOut ? safeFormatDate(b.checkOut, "d MMM yyyy") : ""}
                     </p>
                   </button>
                 ))}
@@ -708,7 +719,7 @@ export default function InvoiceGeneratorPage() {
                       `NLS/2026/000${Math.floor(100 + Math.random() * 900)} (Draft)`}
                   </p>
                   <p className="text-[11px] text-[#1C1C1A]/60 mt-0.5">
-                    Date: {format(new Date(), "dd MMMM yyyy")}
+                    Date: {safeFormatDate(new Date(), "dd MMMM yyyy")}
                   </p>
                   <p className="text-[11px] text-[#1C1C1A]/60">
                     Booking Ref: <strong className="font-mono">{previewData.booking.confirmationNumber}</strong>
@@ -738,10 +749,10 @@ export default function InvoiceGeneratorPage() {
                     {previewData.booking.room.name} (Suite #{previewData.booking.room.roomNumber})
                   </p>
                   <p className="text-[#1C1C1A]/80">
-                    Check-In: {format(new Date(previewData.booking.checkIn), "dd MMM yyyy, 2:00 PM")}
+                    Check-In: {safeFormatDate(previewData.booking.checkIn, "dd MMM yyyy")}, 2:00 PM
                   </p>
                   <p className="text-[#1C1C1A]/80">
-                    Check-Out: {format(new Date(previewData.booking.checkOut), "dd MMM yyyy, 11:00 AM")}
+                    Check-Out: {safeFormatDate(previewData.booking.checkOut, "dd MMM yyyy")}, 11:00 AM
                   </p>
                   <p className="text-[10px] text-[#1C1C1A]/60 mt-1">
                     Stay Duration: {previewData.roomCharges.nights} Night(s) • {previewData.booking.adults} Adults
