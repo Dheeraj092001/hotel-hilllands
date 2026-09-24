@@ -44,7 +44,7 @@ export const ROOMS_DATA: RoomItem[] = [
     size: "450 sq ft",
     capacity: 2,
     view: "Ancient Deodar Grove",
-    image: "/images/luxury-suit (1).jpeg",
+    image: "/images/luxury-suit (2).jpeg",
     amenities: ["King Feather Bed", "Forest View Alcove", "Artisan Bath Salts", "Rain Shower"],
     features: ["King Bed", "Woodland Quiet", "Organic Minibar", "Heated Bathroom"],
   },

@@ -300,6 +300,17 @@ export interface Lead {
 }
 
 // ─── Invoice ──────────────────────────────────────────────────
+export interface InvoiceItem {
+  id: string;
+  invoiceId: string;
+  description: string;
+  quantity: number;
+  unitPrice: number;
+  amount: number;
+  taxRate: number;
+  category?: "ACCOMMODATION" | "FOOD_BEVERAGE" | "EXTRAS" | "ADDITIONAL" | string;
+}
+
 export interface Invoice {
   id: string;
   invoiceNumber: string;
@@ -314,8 +325,106 @@ export interface Invoice {
   total: number;
   currency: string;
   status: "PAID" | "UNPAID" | "PARTIALLY_PAID" | "CANCELLED";
+  pdfUrl?: string;
   issuedAt: string;
   dueDate?: string;
+  items?: InvoiceItem[];
+  booking?: any;
+}
+
+export interface CustomInvoiceItemPayload {
+  description: string;
+  quantity: number;
+  unitPrice: number;
+  taxRate: number;
+  category: "ACCOMMODATION" | "FOOD_BEVERAGE" | "EXTRAS" | "ADDITIONAL" | string;
+}
+
+export interface GenerateCheckoutInvoicePayload {
+  bookingId: string;
+  paymentMethod?: "CASH" | "CREDIT_CARD" | "UPI" | "ROOM_BILL" | string;
+  settleBalance?: boolean;
+  notes?: string;
+  additionalItems?: CustomInvoiceItemPayload[];
+}
+
+export interface CheckoutInvoicePreview {
+  booking: {
+    id: string;
+    confirmationNumber: string;
+    guestName: string;
+    guestEmail: string;
+    guestPhone?: string;
+    checkIn: string;
+    checkOut: string;
+    nights: number;
+    adults: number;
+    children: number;
+    status: string;
+    room: {
+      id: string;
+      name: string;
+      roomNumber: string;
+      basePrice: number;
+      typeName?: string;
+    };
+  };
+  roomCharges: {
+    nights: number;
+    nightlyRate: number;
+    subtotal: number;
+    taxRate: number;
+    tax: number;
+    total: number;
+  };
+  foodOrders: Array<{
+    id: string;
+    orderNumber: string;
+    status: string;
+    createdAt: string;
+    subtotal: number;
+    tax: number;
+    total: number;
+    items: Array<{
+      id: string;
+      dishName: string;
+      quantity: number;
+      unitPrice: number;
+      total: number;
+      isVeg?: boolean;
+    }>;
+  }>;
+  extras: Array<{
+    id: string;
+    name: string;
+    quantity: number;
+    unitPrice: number;
+    total: number;
+    taxRate: number;
+  }>;
+  payments: Array<{
+    id: string;
+    transactionId: string;
+    provider: string;
+    amount: number;
+    status: string;
+    createdAt: string;
+  }>;
+  summary: {
+    roomSubtotal: number;
+    foodSubtotal: number;
+    extrasSubtotal: number;
+    grossSubtotal: number;
+    discount: number;
+    roomTax: number;
+    foodTax: number;
+    extrasTax: number;
+    totalTax: number;
+    serviceCharge: number;
+    grandTotal: number;
+    totalPaid: number;
+    balanceDue: number;
+  };
 }
 
 // ─── Notification ─────────────────────────────────────────────

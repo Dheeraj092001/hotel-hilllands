@@ -39,7 +39,7 @@ export const FEATURED_ROOMS: FeaturedRoom[] = [
     size: "450 sq ft",
     capacity: "2 Guests",
     view: "Ancient Deodar Grove",
-    image: "/images/luxury-suit (1).jpeg",
+    image: "/images/luxury-suit (2).jpeg",
     amenities: ["King Feather Bed", "Forest View Alcove", "Artisan Bath Salts", "Rain Shower"],
   },
   {
