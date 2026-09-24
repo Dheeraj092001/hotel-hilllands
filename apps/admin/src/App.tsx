@@ -17,6 +17,7 @@ const CmsPage = lazy(() => import("./pages/CmsPage"));
 const GuestsCrmPage = lazy(() => import("./pages/GuestsCrmPage"));
 const CouponsPage = lazy(() => import("./pages/CouponsPage"));
 const ReviewsPage = lazy(() => import("./pages/ReviewsPage"));
+const InvoiceGeneratorPage = lazy(() => import("./pages/InvoiceGeneratorPage"));
 const LoginPage = lazy(() => import("./pages/LoginPage"));
 
 function ProtectedAdminRoute({ children }: { children: React.ReactNode }) {
@@ -51,6 +52,8 @@ export default function App() {
           <Route path="housekeeping" element={<HousekeepingPage />} />
           <Route path="dining-pos" element={<DiningPosPage />} />
           <Route path="finance" element={<FinancePage />} />
+          <Route path="invoices" element={<InvoiceGeneratorPage />} />
+          <Route path="invoice-generator" element={<InvoiceGeneratorPage />} />
           <Route path="analytics" element={<AnalyticsPage />} />
           <Route path="cms" element={<CmsPage />} />
           <Route path="guests" element={<GuestsCrmPage />} />

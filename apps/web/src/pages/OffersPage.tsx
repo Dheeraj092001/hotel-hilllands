@@ -72,7 +72,7 @@ const OFFERS: Offer[] = [
     title: "Early Bird Mountain Reserve",
     tagline: "Plan your summer getaway ahead and unlock exclusive guaranteed preferred suite allocations.",
     discount: "15% Off Any Suite",
-    image: "/images/luxury-suit (1).jpeg",
+    image: "/images/luxury-suit (2).jpeg",
     validTill: "Book 45 Days in Advance",
     inclusions: [
       "15% Direct Booking Discount",

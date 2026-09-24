@@ -1,4 +1,5 @@
 import React, { useState } from "react";
+import { useNavigate } from "react-router-dom";
 import { useQuery, useMutation, useQueryClient } from "@tanstack/react-query";
 import { format } from "date-fns";
 import { toast } from "sonner";
@@ -11,10 +12,12 @@ import {
   Loader2,
   X,
   Filter,
+  Receipt,
 } from "lucide-react";
 import { adminService, AdminBooking } from "../services/admin.service";
 
 export default function BookingsPage() {
+  const navigate = useNavigate();
   const queryClient = useQueryClient();
   const [search, setSearch] = useState("");
   const [status, setStatus] = useState("ALL");
@@ -156,6 +159,19 @@ export default function BookingsPage() {
                         </button>
                       )}
                       <button
+                        onClick={() =>
+                          navigate(
+                            `/invoices?bookingId=${b.id}&email=${encodeURIComponent(
+                              b.guestEmail || b.user.email
+                            )}`
+                          )
+                        }
+                        className="px-2.5 py-1 rounded bg-[#183C32]/50 text-[#D9C7A3] hover:bg-[#183C32] text-[11px] font-medium border border-[#D9C7A3]/30"
+                        title="Generate or view checkout invoice"
+                      >
+                        Invoice
+                      </button>
+                      <button
                         onClick={() => setSelectedBooking(b)}
                         className="px-2.5 py-1 rounded bg-white/5 text-stone-300 hover:text-white text-[11px]"
                       >
@@ -183,6 +199,7 @@ export default function BookingsPage() {
 
             <div className="text-xs space-y-2 text-stone-300">
               <p><strong>Guest:</strong> {selectedBooking.guestName || selectedBooking.user.name}</p>
+              <p><strong>Email:</strong> {selectedBooking.guestEmail || selectedBooking.user.email}</p>
               <p><strong>Suite:</strong> {selectedBooking.room.name} (#{selectedBooking.room.roomNumber})</p>
               <p><strong>Stay:</strong> {selectedBooking.checkIn.split("T")[0]} to {selectedBooking.checkOut.split("T")[0]}</p>
               <p><strong>Party:</strong> {selectedBooking.adults} Adults, {selectedBooking.children} Children</p>
@@ -191,6 +208,18 @@ export default function BookingsPage() {
             </div>
 
             <div className="pt-3 border-t border-white/10 flex justify-end gap-2">
+              <button
+                onClick={() =>
+                  navigate(
+                    `/invoices?bookingId=${selectedBooking.id}&email=${encodeURIComponent(
+                      selectedBooking.guestEmail || selectedBooking.user.email
+                    )}`
+                  )
+                }
+                className="px-3 py-1.5 rounded bg-[#183C32] text-[#D9C7A3] hover:bg-[#315C4A] text-xs font-medium border border-[#D9C7A3]/30"
+              >
+                Generate Checkout Invoice
+              </button>
               <button
                 onClick={() => statusMutation.mutate({ id: selectedBooking.id, nextStatus: "CANCELLED" })}
                 className="px-3 py-1.5 rounded bg-red-950 text-red-300 hover:bg-red-900 text-xs"

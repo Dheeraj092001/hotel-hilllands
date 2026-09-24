@@ -29,24 +29,33 @@ export default function RoomDetailPage() {
   const [activeImageIndex, setActiveImageIndex] = useState(0);
 
   // Gallery of high-res photos
-  const gallery = [
-    room.image,
-    room.category === "suite"
-      ? "/images/ultra-luxury (1).jpeg"
-      : room.category === "cottage"
-      ? "/images/ultra-luxury (5).jpeg"
-      : "/images/premium(2).jpeg",
-    room.category === "suite"
-      ? "/images/ultra-luxury (2).jpeg"
-      : room.category === "cottage"
-      ? "/images/ultra-luxury (6).jpeg"
-      : "/images/premium4.jpeg",
-    room.category === "suite"
-      ? "/images/ultra-luxury-washroom.jpeg"
-      : "/images/primium-washroom.jpeg",
-    "/images/balcony-view.jpeg",
-    "/images/view-from-room.jpeg",
-  ];
+  const gallery = room.id === "cedar-ridge-deluxe"
+    ? [
+        room.image, // /images/luxury-suit (2).jpeg
+        "/images/luxury-suit (5).jpeg",
+        "/images/luxury-suit (3).jpeg",
+        "/images/luxury-suit-washroom(1).jpeg",
+        "/images/balcony-view.jpeg",
+        "/images/view-from-room.jpeg",
+      ]
+    : [
+        room.image,
+        room.category === "suite"
+          ? "/images/ultra-luxury (1).jpeg"
+          : room.category === "cottage"
+          ? "/images/ultra-luxury (5).jpeg"
+          : "/images/premium(2).jpeg",
+        room.category === "suite"
+          ? "/images/ultra-luxury (2).jpeg"
+          : room.category === "cottage"
+          ? "/images/ultra-luxury (6).jpeg"
+          : "/images/premium4.jpeg",
+        room.category === "suite"
+          ? "/images/ultra-luxury-washroom.jpeg"
+          : "/images/primium-washroom.jpeg",
+        "/images/balcony-view.jpeg",
+        "/images/view-from-room.jpeg",
+      ];
 
   const todayStr = new Date().toISOString().split("T")[0];
   const nextDay = new Date();

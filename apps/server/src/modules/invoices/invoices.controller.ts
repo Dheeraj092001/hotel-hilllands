@@ -74,4 +74,94 @@ export class InvoicesController {
       });
     }
   }
+
+  static async lookupGuestByEmail(req: AuthenticatedRequest, res: Response): Promise<void> {
+    try {
+      const email = req.query.email as string;
+      if (!email) {
+        res.status(400).json({ success: false, message: "Email query parameter is required" });
+        return;
+      }
+
+      const data = await InvoicesService.lookupGuestByEmail(email);
+      res.status(200).json({
+        success: true,
+        data,
+        message: "Guest and booking data retrieved successfully",
+      });
+    } catch (error: any) {
+      res.status(error.statusCode || 500).json({
+        success: false,
+        message: error.message || "Failed to lookup guest",
+        code: error.code || "INTERNAL_ERROR",
+      });
+    }
+  }
+
+  static async getCheckoutPreview(req: AuthenticatedRequest, res: Response): Promise<void> {
+    try {
+      const bookingId = req.params.bookingId;
+      if (!bookingId) {
+        res.status(400).json({ success: false, message: "bookingId parameter is required" });
+        return;
+      }
+
+      const preview = await InvoicesService.getCheckoutPreview(bookingId);
+      res.status(200).json({
+        success: true,
+        data: preview,
+        message: "Checkout invoice preview calculated successfully",
+      });
+    } catch (error: any) {
+      res.status(error.statusCode || 500).json({
+        success: false,
+        message: error.message || "Failed to calculate checkout preview",
+        code: error.code || "INTERNAL_ERROR",
+      });
+    }
+  }
+
+  static async generateCheckoutInvoice(req: AuthenticatedRequest, res: Response): Promise<void> {
+    try {
+      const { bookingId, paymentMethod, settleBalance, notes, additionalItems } = req.body;
+      if (!bookingId) {
+        res.status(400).json({ success: false, message: "bookingId is required in body" });
+        return;
+      }
+
+      const invoice = await InvoicesService.generateCheckoutInvoice({
+        bookingId,
+        paymentMethod,
+        settleBalance,
+        notes,
+        additionalItems,
+      });
+
+      res.status(201).json({
+        success: true,
+        data: invoice,
+        message: "Official checkout invoice generated and saved successfully",
+      });
+    } catch (error: any) {
+      res.status(error.statusCode || 500).json({
+        success: false,
+        message: error.message || "Failed to generate checkout invoice",
+        code: error.code || "INTERNAL_ERROR",
+      });
+    }
+  }
+
+  static async sendInvoiceEmail(req: AuthenticatedRequest, res: Response): Promise<void> {
+    try {
+      const invoiceId = req.params.id;
+      const result = await InvoicesService.sendInvoiceEmail(invoiceId);
+      res.status(200).json(result);
+    } catch (error: any) {
+      res.status(error.statusCode || 500).json({
+        success: false,
+        message: error.message || "Failed to send invoice email",
+        code: error.code || "INTERNAL_ERROR",
+      });
+    }
+  }
 }

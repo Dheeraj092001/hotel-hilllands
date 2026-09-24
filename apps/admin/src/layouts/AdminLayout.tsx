@@ -19,6 +19,7 @@ import {
   Receipt,
   BarChart3,
   Globe,
+  FileText,
 } from "lucide-react";
 import { useAdminAuthStore } from "../stores/authStore";
 import { auth } from "../lib/firebase";
@@ -31,6 +32,7 @@ const navItems = [
   { label: "Housekeeping Board", path: "/housekeeping", icon: Sparkles },
   { label: "Dining & Kitchen POS", path: "/dining-pos", icon: UtensilsCrossed },
   { label: "Finance & Tax Ledger", path: "/finance", icon: Receipt },
+  { label: "Invoice Generator", path: "/invoices", icon: FileText },
   { label: "Yield & Analytics", path: "/analytics", icon: BarChart3 },
   { label: "Website CMS", path: "/cms", icon: Globe },
   { label: "Guests CRM", path: "/guests", icon: Users },

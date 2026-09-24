@@ -2,6 +2,7 @@ import { Outlet, useLocation } from "react-router-dom";
 import { useEffect } from "react";
 import Header from "../components/layout/Header";
 import Footer from "../components/layout/Footer";
+import AiChatbot from "../components/chat/AiChatbot";
 
 export default function PublicLayout() {
   const { pathname } = useLocation();
@@ -17,6 +18,7 @@ export default function PublicLayout() {
         <Outlet />
       </main>
       <Footer />
+      <AiChatbot />
     </div>
   );
 }
