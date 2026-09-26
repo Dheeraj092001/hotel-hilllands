@@ -18,7 +18,8 @@ export const env = {
   // Server
   port: parseInt(process.env.PORT || "3001", 10),
   nodeEnv: process.env.NODE_ENV || "development",
-  corsOrigin: (process.env.CORS_ORIGIN || "http://localhost:5173,http://localhost:5174").split(","),
+  corsOrigin: (process.env.CORS_ORIGIN || "http://localhost:5173,http://localhost:5174,http://localhost:5175").split(","),
+
 
   // Database
   databaseUrl: requireEnv("DATABASE_URL", "mysql://root:password@localhost:3306/hotel_newlands"),
