@@ -20,6 +20,9 @@ import {
   BarChart3,
   Globe,
   FileText,
+  Mountain,
+  MapPin,
+  ClipboardList,
 } from "lucide-react";
 import { useAdminAuthStore } from "../stores/authStore";
 import { auth } from "../lib/firebase";
@@ -38,6 +41,10 @@ const navItems = [
   { label: "Guests CRM", path: "/guests", icon: Users },
   { label: "Coupons & Offers", path: "/coupons", icon: Tag },
   { label: "Reviews Moderation", path: "/reviews", icon: Star },
+  // ── Tour & Travel section ─────────────────
+  { label: "Tour Packages",      path: "/tours-manager",    icon: Mountain },
+  { label: "Destinations",       path: "/destinations-mgr",  icon: MapPin },
+  { label: "Tour Bookings CRM",  path: "/tour-bookings-crm", icon: ClipboardList },
 ];
 
 export default function AdminLayout() {
@@ -184,12 +191,20 @@ export default function AdminLayout() {
 
           <div className="flex items-center gap-3">
             <a
-              href="http://localhost:5173"
+              href="http://localhost:5175"
               target="_blank"
               rel="noopener noreferrer"
               className="text-xs text-[#D9C7A3] hover:underline px-3 py-1 rounded bg-[#183C32]/40 border border-[#D9C7A3]/30 hidden sm:block"
             >
-              Open Guest Site ↗
+              Tour Site ↗
+            </a>
+            <a
+              href="http://localhost:5173"
+              target="_blank"
+              rel="noopener noreferrer"
+              className="text-xs text-stone-400 hover:underline px-3 py-1 rounded bg-white/5 border border-white/10 hidden sm:block"
+            >
+              Hotel Site ↗
             </a>
           </div>
         </header>

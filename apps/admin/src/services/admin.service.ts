@@ -783,3 +783,142 @@ export const adminService = {
   },
 };
 
+
+// ═══════════════════════════════════════════════════════════════
+// TOUR & TRAVEL ADMIN SERVICE — extends admin.service.ts
+// ═══════════════════════════════════════════════════════════════
+
+// ---------- Types ----------
+export interface AdminDestination {
+  id: string;
+  slug: string;
+  name: string;
+  region: string | null;
+  description: string | null;
+  heroImage: string | null;
+  isPublished: boolean;
+  sortOrder: number;
+  _count?: { tours: number };
+}
+
+export interface AdminTour {
+  id: string;
+  slug: string;
+  title: string;
+  travelStyle: string | null;
+  durationDays: number | null;
+  maxGroup: number | null;
+  basePriceInr: string | null;
+  isPublished: boolean;
+  isFeatured: boolean;
+  sortOrder: number;
+  destination: { id: string; name: string; slug: string };
+  media: { id: string; url: string; isPrimary: boolean }[];
+  departures: { id: string; startDate: string; endDate: string; seatsBooked: number; seatsTotal: number | null; status: string }[];
+}
+
+export interface AdminTourBooking {
+  id: string;
+  confirmationNumber: string;
+  status: string;
+  totalAmount: string;
+  guestName: string;
+  guestPhone: string;
+  guestEmail: string | null;
+  adults: number;
+  children: number;
+  source: string;
+  createdAt: string;
+  tour: { title: string; slug: string };
+  departure: { startDate: string; endDate: string } | null;
+  travelers: { id: string; name: string }[];
+}
+
+export interface TourBookingStats {
+  total: number;
+  pending: number;
+  confirmed: number;
+  cancelled: number;
+}
+
+// ---------- Tour destinations service ----------
+export const adminDestinationsService = {
+  async list(): Promise<AdminDestination[]> {
+    const res = await api.get("/destinations/admin/all");
+    return res.data.data;
+  },
+  async create(data: Partial<AdminDestination> & { slug: string; name: string }): Promise<AdminDestination> {
+    const res = await api.post("/destinations", data);
+    return res.data.data;
+  },
+  async update(id: string, data: Partial<AdminDestination>): Promise<AdminDestination> {
+    const res = await api.put(`/destinations/${id}`, data);
+    return res.data.data;
+  },
+  async remove(id: string): Promise<void> {
+    await api.delete(`/destinations/${id}`);
+  },
+};
+
+// ---------- Tours service ----------
+export const adminToursService = {
+  async list(filters: { page?: number; limit?: number; destinationId?: string; travelStyle?: string } = {}): Promise<{ data: AdminTour[]; meta: { total: number; totalPages: number } }> {
+    const res = await api.get("/tours", { params: filters });
+    return res.data;
+  },
+  async getBySlug(slug: string): Promise<AdminTour & { itineraryDays: unknown[]; faqs: unknown[] }> {
+    const res = await api.get(`/tours/${slug}`);
+    return res.data.data;
+  },
+  async create(data: Record<string, unknown>): Promise<AdminTour> {
+    const res = await api.post("/tours", data);
+    return res.data.data;
+  },
+  async update(id: string, data: Record<string, unknown>): Promise<AdminTour> {
+    const res = await api.put(`/tours/${id}`, data);
+    return res.data.data;
+  },
+  async remove(id: string): Promise<void> {
+    await api.delete(`/tours/${id}`);
+  },
+  async upsertItinerary(tourId: string, days: unknown[]): Promise<void> {
+    await api.put(`/tours/${tourId}/itinerary`, { days });
+  },
+  async addMedia(tourId: string, media: { url: string; publicId: string; altText?: string; isPrimary?: boolean }) {
+    const res = await api.post(`/tours/${tourId}/media`, media);
+    return res.data.data;
+  },
+  async deleteMedia(mediaId: string): Promise<void> {
+    await api.delete(`/tours/media/${mediaId}`);
+  },
+  async addDeparture(tourId: string, data: Record<string, unknown>) {
+    const res = await api.post(`/tours/${tourId}/departures`, data);
+    return res.data.data;
+  },
+};
+
+// ---------- Tour bookings service ----------
+export const adminTourBookingsService = {
+  async list(params: { page?: number; status?: string; tourId?: string } = {}): Promise<{ data: AdminTourBooking[]; meta: { total: number; totalPages: number } }> {
+    const res = await api.get("/tour-bookings", { params });
+    return res.data;
+  },
+  async getById(id: string): Promise<AdminTourBooking & { statusHistory: unknown[] }> {
+    const res = await api.get(`/tour-bookings/${id}`);
+    return res.data.data;
+  },
+  async create(data: Record<string, unknown>): Promise<AdminTourBooking> {
+    const res = await api.post("/tour-bookings", data);
+    return res.data.data;
+  },
+  async updateStatus(id: string, status: string, note?: string): Promise<void> {
+    await api.patch(`/tour-bookings/${id}/status`, { status, note });
+  },
+  async addNote(id: string, note: string): Promise<void> {
+    await api.patch(`/tour-bookings/${id}/note`, { note });
+  },
+  async stats(): Promise<TourBookingStats> {
+    const res = await api.get("/tour-bookings/stats");
+    return res.data.data;
+  },
+};

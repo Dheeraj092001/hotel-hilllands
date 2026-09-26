@@ -19,6 +19,9 @@ const CouponsPage = lazy(() => import("./pages/CouponsPage"));
 const ReviewsPage = lazy(() => import("./pages/ReviewsPage"));
 const InvoiceGeneratorPage = lazy(() => import("./pages/InvoiceGeneratorPage"));
 const LoginPage = lazy(() => import("./pages/LoginPage"));
+const ToursManagerPage = lazy(() => import("./pages/ToursManagerPage"));
+const DestinationsManagerPage = lazy(() => import("./pages/DestinationsManagerPage"));
+const TourBookingsCrmPage = lazy(() => import("./pages/TourBookingsCrmPage"));
 
 function ProtectedAdminRoute({ children }: { children: React.ReactNode }) {
   const { user } = useAdminAuthStore();
@@ -59,6 +62,10 @@ export default function App() {
           <Route path="guests" element={<GuestsCrmPage />} />
           <Route path="coupons" element={<CouponsPage />} />
           <Route path="reviews" element={<ReviewsPage />} />
+          {/* Tour & Travel */}
+          <Route path="tours-manager" element={<ToursManagerPage />} />
+          <Route path="destinations-mgr" element={<DestinationsManagerPage />} />
+          <Route path="tour-bookings-crm" element={<TourBookingsCrmPage />} />
         </Route>
 
         <Route path="*" element={<Navigate to="/" replace />} />
