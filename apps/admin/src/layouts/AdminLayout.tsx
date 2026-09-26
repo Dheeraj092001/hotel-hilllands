@@ -23,6 +23,7 @@ import {
   Mountain,
   MapPin,
   ClipboardList,
+  Inbox,
 } from "lucide-react";
 import { useAdminAuthStore } from "../stores/authStore";
 import { auth } from "../lib/firebase";
@@ -42,6 +43,7 @@ const navItems = [
   { label: "Coupons & Offers", path: "/coupons", icon: Tag },
   { label: "Reviews Moderation", path: "/reviews", icon: Star },
   // ── Tour & Travel section ─────────────────
+  { label: "Tour Leads & CRM",   path: "/tour-leads-crm",    icon: Inbox },
   { label: "Tour Packages",      path: "/tours-manager",    icon: Mountain },
   { label: "Destinations",       path: "/destinations-mgr",  icon: MapPin },
   { label: "Tour Bookings CRM",  path: "/tour-bookings-crm", icon: ClipboardList },

@@ -922,3 +922,54 @@ export const adminTourBookingsService = {
     return res.data.data;
   },
 };
+
+// ---------- Tour leads & CRM inbox service ----------
+export interface AdminTourLead {
+  id: string;
+  leadId: string;
+  tourId?: string | null;
+  destination?: string | null;
+  travelStyle?: string | null;
+  travelMonth?: string | null;
+  groupSize?: number | null;
+  budgetBand?: string | null;
+  source: string;
+  utmSource?: string | null;
+  utmMedium?: string | null;
+  utmCampaign?: string | null;
+  createdAt: string;
+  updatedAt: string;
+  lead: {
+    id: string;
+    name: string;
+    email: string;
+    phone?: string | null;
+    subject: string;
+    message: string;
+    travelDate?: string | null;
+    numberOfGuests?: number | null;
+    status: string;
+    assignedTo?: string | null;
+    notes?: Array<{
+      id: string;
+      note: string;
+      createdBy: string;
+      createdAt: string;
+    }>;
+  };
+}
+
+export const adminTourLeadsService = {
+  async list(params: { status?: string; search?: string; page?: number; limit?: number } = {}): Promise<{ data: AdminTourLead[]; meta: { total: number; page: number; limit: number; totalPages: number } }> {
+    const res = await api.get("/tour-leads", { params });
+    return res.data;
+  },
+  async updateStatus(leadId: string, status: string, note?: string): Promise<void> {
+    await api.patch(`/tour-leads/${leadId}/status`, { status, note });
+  },
+  async convertToBooking(leadId: string, bookingData: Record<string, unknown>): Promise<any> {
+    const res = await api.post(`/tour-leads/${leadId}/convert`, bookingData);
+    return res.data.data;
+  },
+};
+

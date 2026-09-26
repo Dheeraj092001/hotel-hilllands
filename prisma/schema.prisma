@@ -480,6 +480,7 @@ model Lead {
   status         String    @default("NEW")
   assignedTo     String?   @map("assigned_to")
   notes          LeadNote[]
+  tourLead       TourLead?
   createdAt      DateTime  @default(now()) @map("created_at")
   updatedAt      DateTime  @updatedAt @map("updated_at")
 
@@ -885,21 +886,25 @@ model TourBookingStatusHistory {
 // Extends the existing Lead model with tour-specific context.
 // Added as a separate linked model to avoid mutating the original schema.
 model TourLead {
-  id          String   @id @default(uuid())
-  leadId      String   @unique @map("lead_id")
-  tourId      String?  @map("tour_id")
+  id          String    @id @default(uuid())
+  leadId      String    @unique @map("lead_id")
+  lead        Lead      @relation(fields: [leadId], references: [id], onDelete: Cascade)
+  tourId      String?   @map("tour_id")
   destination String?
-  travelStyle String?  @map("travel_style")
-  budgetBand  String?  @map("budget_band")
-  source      String   @default("WEBSITE")
-  utmSource   String?  @map("utm_source")
-  utmMedium   String?  @map("utm_medium")
-  utmCampaign String?  @map("utm_campaign")
+  travelStyle String?   @map("travel_style")
+  travelMonth String?   @map("travel_month")
+  groupSize   Int?      @map("group_size")
+  budgetBand  String?   @map("budget_band")
+  source      String    @default("WEBSITE")
+  utmSource   String?   @map("utm_source")
+  utmMedium   String?   @map("utm_medium")
+  utmCampaign String?   @map("utm_campaign")
   consentAt   DateTime? @map("consent_at")
-  createdAt   DateTime @default(now()) @map("created_at")
-  updatedAt   DateTime @updatedAt @map("updated_at")
+  createdAt   DateTime  @default(now()) @map("created_at")
+  updatedAt   DateTime  @updatedAt @map("updated_at")
 
   @@index([leadId])
   @@index([tourId])
   @@map("tour_leads")
 }
+

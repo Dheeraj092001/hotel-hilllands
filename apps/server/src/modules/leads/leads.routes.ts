@@ -1,5 +1,14 @@
-import { Router } from 'express';
+import { Router } from "express";
+import { TourLeadsController } from "../tour-leads/tour-leads.controller";
+import { authenticate } from "../../middleware/authenticate";
+import { requireAdmin } from "../../middleware/authorize";
+
 const router = Router();
-// TODO: implement leads routes
-router.get('/', (_req, res) => res.json({ success: true, message: 'leads module placeholder', data: [] }));
+
+// Public enquiry endpoint for leads
+router.post("/", TourLeadsController.submitEnquiry);
+
+// Admin listing
+router.get("/", authenticate, requireAdmin, TourLeadsController.list);
+
 export default router;

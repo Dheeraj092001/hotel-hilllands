@@ -29,6 +29,7 @@ import housekeepingRoutes from "./modules/housekeeping/housekeeping.routes";
 import destinationRoutes from "./modules/destinations/destinations.routes";
 import tourRoutes from "./modules/tours/tours.routes";
 import tourBookingRoutes from "./modules/tour-bookings/tour-bookings.routes";
+import tourLeadRoutes from "./modules/tour-leads/tour-leads.routes";
 
 // Initialize Firebase Admin
 initFirebase();
@@ -93,6 +94,7 @@ app.use(`${v1}/housekeeping`, housekeepingRoutes);
 app.use(`${v1}/destinations`, destinationRoutes);
 app.use(`${v1}/tours`, tourRoutes);
 app.use(`${v1}/tour-bookings`, tourBookingRoutes);
+app.use(`${v1}/tour-leads`, tourLeadRoutes);
 
 // ─── Error Handling ───────────────────────────────────────────
 app.use(notFoundHandler);
