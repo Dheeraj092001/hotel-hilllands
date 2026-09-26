@@ -668,5 +668,238 @@ model SystemSetting {
   createdAt   DateTime @default(now()) @map("created_at")
   updatedAt   DateTime @updatedAt @map("updated_at")
 
+
   @@map("system_settings")
+}
+
+// ═══════════════════════════════════════════════════════════════
+// TOUR & TRAVEL EXTENSION — hotel-hilllands tour-and-travel branch
+// All models below are ADDITIVE — no existing models were changed.
+// ═══════════════════════════════════════════════════════════════
+
+// ─── Destinations ─────────────────────────────────────────────
+model Destination {
+  id          String   @id @default(uuid())
+  slug        String   @unique
+  name        String
+  region      String?
+  description String?  @db.Text
+  heroImage   String?  @map("hero_image")
+  heroImageId String?  @map("hero_image_id")
+  highlights  Json?
+  seoTitle    String?  @map("seo_title")
+  seoDesc     String?  @db.Text @map("seo_desc")
+  isPublished Boolean  @default(false) @map("is_published")
+  sortOrder   Int      @default(0) @map("sort_order")
+  tours       Tour[]
+  createdAt   DateTime @default(now()) @map("created_at")
+  updatedAt   DateTime @updatedAt @map("updated_at")
+  deletedAt   DateTime? @map("deleted_at")
+
+  @@index([isPublished])
+  @@index([slug])
+  @@map("destinations")
+}
+
+// ─── Tours ────────────────────────────────────────────────────
+model Tour {
+  id            String       @id @default(uuid())
+  destinationId String       @map("destination_id")
+  destination   Destination  @relation(fields: [destinationId], references: [id])
+  slug          String       @unique
+  title         String
+  travelStyle   String?      @map("travel_style")
+  durationDays  Int?         @map("duration_days")
+  minGroup      Int?         @map("min_group")
+  maxGroup      Int?         @map("max_group")
+  basePriceInr  Decimal?     @db.Decimal(10, 2) @map("base_price_inr")
+  summary       String?      @db.Text
+  highlights    Json?
+  inclusions    Json?
+  exclusions    Json?
+  mapData       Json?        @map("map_data")
+  isPublished   Boolean      @default(false) @map("is_published")
+  isFeatured    Boolean      @default(false) @map("is_featured")
+  sortOrder     Int          @default(0) @map("sort_order")
+  itineraryDays ItineraryDay[]
+  departures    Departure[]
+  pricingRules  PricingRule[]
+  media         TourMedia[]
+  faqs          TourFaq[]
+  tourBookings  TourBooking[]
+  createdAt     DateTime     @default(now()) @map("created_at")
+  updatedAt     DateTime     @updatedAt @map("updated_at")
+  deletedAt     DateTime?    @map("deleted_at")
+
+  @@index([destinationId])
+  @@index([isPublished])
+  @@index([isFeatured])
+  @@index([travelStyle])
+  @@map("tours")
+}
+
+model ItineraryDay {
+  id            String  @id @default(uuid())
+  tourId        String  @map("tour_id")
+  tour          Tour    @relation(fields: [tourId], references: [id], onDelete: Cascade)
+  dayNumber     Int     @map("day_number")
+  title         String
+  description   String  @db.Text
+  location      String?
+  accommodation String?
+  meals         String?
+  activities    Json?
+
+  @@unique([tourId, dayNumber])
+  @@index([tourId])
+  @@map("itinerary_days")
+}
+
+model Departure {
+  id           String        @id @default(uuid())
+  tourId       String        @map("tour_id")
+  tour         Tour          @relation(fields: [tourId], references: [id], onDelete: Cascade)
+  startDate    DateTime      @map("start_date")
+  endDate      DateTime      @map("end_date")
+  priceOverride Decimal?     @db.Decimal(10, 2) @map("price_override")
+  seatsTotal   Int?          @map("seats_total")
+  seatsBooked  Int           @default(0) @map("seats_booked")
+  status       String        @default("OPEN")
+  notes        String?       @db.Text
+  tourBookings TourBooking[]
+  createdAt    DateTime      @default(now()) @map("created_at")
+  updatedAt    DateTime      @updatedAt @map("updated_at")
+
+  @@index([tourId])
+  @@index([startDate])
+  @@index([status])
+  @@map("departures")
+}
+
+model PricingRule {
+  id        String   @id @default(uuid())
+  tourId    String   @map("tour_id")
+  tour      Tour     @relation(fields: [tourId], references: [id], onDelete: Cascade)
+  name      String
+  ruleType  String   @map("rule_type")
+  value     Decimal  @db.Decimal(10, 2)
+  conditions Json?
+  startDate DateTime? @map("start_date")
+  endDate   DateTime? @map("end_date")
+  isActive  Boolean  @default(true) @map("is_active")
+  createdAt DateTime @default(now()) @map("created_at")
+
+  @@index([tourId])
+  @@map("pricing_rules")
+}
+
+model TourMedia {
+  id        String  @id @default(uuid())
+  tourId    String  @map("tour_id")
+  tour      Tour    @relation(fields: [tourId], references: [id], onDelete: Cascade)
+  url       String
+  publicId  String  @map("public_id")
+  altText   String? @map("alt_text")
+  caption   String?
+  isPrimary Boolean @default(false) @map("is_primary")
+  sortOrder Int     @default(0) @map("sort_order")
+  createdAt DateTime @default(now()) @map("created_at")
+
+  @@index([tourId])
+  @@map("tour_media")
+}
+
+model TourFaq {
+  id        String @id @default(uuid())
+  tourId    String @map("tour_id")
+  tour      Tour   @relation(fields: [tourId], references: [id], onDelete: Cascade)
+  question  String
+  answer    String @db.Text
+  sortOrder Int    @default(0) @map("sort_order")
+
+  @@index([tourId])
+  @@map("tour_faqs")
+}
+
+// ─── Tour Bookings ────────────────────────────────────────────
+model TourBooking {
+  id                 String                    @id @default(uuid())
+  tourId             String                    @map("tour_id")
+  tour               Tour                      @relation(fields: [tourId], references: [id])
+  departureId        String?                   @map("departure_id")
+  departure          Departure?                @relation(fields: [departureId], references: [id])
+  confirmationNumber String                    @unique @map("confirmation_number")
+  status             String                    @default("PENDING")
+  totalAmount        Decimal                   @db.Decimal(10, 2) @map("total_amount")
+  currency           String                    @default("INR")
+  guestName          String                    @map("guest_name")
+  guestPhone         String                    @map("guest_phone")
+  guestEmail         String?                   @map("guest_email")
+  adults             Int                       @default(1)
+  children           Int                       @default(0)
+  specialRequests    String?                   @db.Text @map("special_requests")
+  internalNotes      String?                   @db.Text @map("internal_notes")
+  source             String                    @default("WEBSITE")
+  leadId             String?                   @map("lead_id")
+  travelers          TourTraveler[]
+  statusHistory      TourBookingStatusHistory[]
+  createdAt          DateTime                  @default(now()) @map("created_at")
+  updatedAt          DateTime                  @updatedAt @map("updated_at")
+
+  @@index([tourId])
+  @@index([status])
+  @@index([leadId])
+  @@index([confirmationNumber])
+  @@map("tour_bookings")
+}
+
+model TourTraveler {
+  id        String      @id @default(uuid())
+  bookingId String      @map("booking_id")
+  booking   TourBooking @relation(fields: [bookingId], references: [id], onDelete: Cascade)
+  name      String
+  idType    String?     @map("id_type")
+  idNumber  String?     @map("id_number")
+  age       Int?
+  phone     String?
+
+  @@index([bookingId])
+  @@map("tour_travelers")
+}
+
+model TourBookingStatusHistory {
+  id         String      @id @default(uuid())
+  bookingId  String      @map("booking_id")
+  booking    TourBooking @relation(fields: [bookingId], references: [id], onDelete: Cascade)
+  fromStatus String      @map("from_status")
+  toStatus   String      @map("to_status")
+  changedBy  String      @map("changed_by")
+  note       String?
+  createdAt  DateTime    @default(now()) @map("created_at")
+
+  @@index([bookingId])
+  @@map("tour_booking_status_history")
+}
+
+// ─── Tour Lead Extension ──────────────────────────────────────
+// Extends the existing Lead model with tour-specific context.
+// Added as a separate linked model to avoid mutating the original schema.
+model TourLead {
+  id          String   @id @default(uuid())
+  leadId      String   @unique @map("lead_id")
+  tourId      String?  @map("tour_id")
+  destination String?
+  travelStyle String?  @map("travel_style")
+  budgetBand  String?  @map("budget_band")
+  source      String   @default("WEBSITE")
+  utmSource   String?  @map("utm_source")
+  utmMedium   String?  @map("utm_medium")
+  utmCampaign String?  @map("utm_campaign")
+  consentAt   DateTime? @map("consent_at")
+  createdAt   DateTime @default(now()) @map("created_at")
+  updatedAt   DateTime @updatedAt @map("updated_at")
+
+  @@index([leadId])
+  @@index([tourId])
+  @@map("tour_leads")
 }

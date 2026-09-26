@@ -26,6 +26,9 @@ import notificationRoutes from "./modules/notifications/notifications.routes";
 import analyticsRoutes from "./modules/analytics/analytics.routes";
 import auditRoutes from "./modules/audit/audit.routes";
 import housekeepingRoutes from "./modules/housekeeping/housekeeping.routes";
+import destinationRoutes from "./modules/destinations/destinations.routes";
+import tourRoutes from "./modules/tours/tours.routes";
+import tourBookingRoutes from "./modules/tour-bookings/tour-bookings.routes";
 
 // Initialize Firebase Admin
 initFirebase();
@@ -86,6 +89,10 @@ app.use(`${v1}/notifications`, notificationRoutes);
 app.use(`${v1}/analytics`, analyticsRoutes);
 app.use(`${v1}/audit`, auditRoutes);
 app.use(`${v1}/housekeeping`, housekeepingRoutes);
+// ─── Tour & Travel Routes ─────────────────────────────────────
+app.use(`${v1}/destinations`, destinationRoutes);
+app.use(`${v1}/tours`, tourRoutes);
+app.use(`${v1}/tour-bookings`, tourBookingRoutes);
 
 // ─── Error Handling ───────────────────────────────────────────
 app.use(notFoundHandler);
