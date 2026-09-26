@@ -9,6 +9,7 @@
     "dev:web": "pnpm --filter @hotel/web run dev",
     "dev:admin": "pnpm --filter @hotel/admin run dev",
     "dev:server": "pnpm --filter @hotel/server run dev",
+    "dev:web-tour": "pnpm --filter @hotel/web-tour run dev",
     "build": "pnpm -r run build",
     "lint": "pnpm -r run lint",
     "typecheck": "pnpm -r run typecheck",

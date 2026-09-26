@@ -1,0 +1,130 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+/* ── Root tokens ─────────────────────────────────── */
+:root {
+  --color-ink:          #0C1310;
+  --color-pine:         #173B2B;
+  --color-forest:       #275B45;
+  --color-cloud:        #F7F5EF;
+  --color-glacier:      #DDEFF0;
+  --color-stone:        #B7B1A3;
+  --color-alpine-sun:   #D59A52;
+
+  --ease-brand: cubic-bezier(0.16, 1, 0.3, 1);
+  --duration-fast:   200ms;
+  --duration-normal: 400ms;
+  --duration-slow:   700ms;
+}
+
+/* ── Base ────────────────────────────────────────── */
+@layer base {
+  *,
+  *::before,
+  *::after {
+    box-sizing: border-box;
+  }
+
+  html {
+    scroll-behavior: smooth;
+    -webkit-text-size-adjust: 100%;
+  }
+
+  body {
+    @apply bg-cloud text-ink font-sans antialiased;
+    overflow-x: hidden;
+  }
+
+  h1, h2, h3, h4 {
+    @apply font-serif;
+    text-wrap: balance;
+  }
+
+  p {
+    text-wrap: pretty;
+  }
+
+  img, video {
+    max-width: 100%;
+    height: auto;
+    display: block;
+  }
+
+  ::selection {
+    background: var(--color-alpine-sun);
+    color: var(--color-ink);
+  }
+
+  :focus-visible {
+    outline: 2px solid var(--color-forest);
+    outline-offset: 3px;
+    border-radius: 2px;
+  }
+}
+
+/* ── Component utilities ─────────────────────────── */
+@layer components {
+  /* Eyebrow label */
+  .eyebrow {
+    @apply text-eyebrow font-sans font-semibold uppercase tracking-widest text-forest;
+  }
+
+  /* Rich editorial text */
+  .prose-brand {
+    @apply text-ink/80 leading-relaxed;
+  }
+
+  /* Overlay gradient for hero images */
+  .overlay-gradient {
+    background: linear-gradient(
+      to bottom,
+      rgba(12, 19, 16, 0) 0%,
+      rgba(12, 19, 16, 0.4) 50%,
+      rgba(12, 19, 16, 0.85) 100%
+    );
+  }
+
+  /* Glass morphism card */
+  .glass-card {
+    background: rgba(247, 245, 239, 0.7);
+    backdrop-filter: blur(16px);
+    -webkit-backdrop-filter: blur(16px);
+    border: 1px solid rgba(247, 245, 239, 0.3);
+  }
+
+  /* Noise texture overlay */
+  .noise-overlay::after {
+    content: "";
+    position: absolute;
+    inset: 0;
+    background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 256 256' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)' opacity='0.03'/%3E%3C/svg%3E");
+    pointer-events: none;
+    opacity: 0.35;
+  }
+
+  /* Horizontal scroll track for tour cards */
+  .scroll-track {
+    display: flex;
+    gap: 1.5rem;
+    overflow-x: auto;
+    scroll-snap-type: x mandatory;
+    -webkit-overflow-scrolling: touch;
+    scrollbar-width: none;
+  }
+  .scroll-track::-webkit-scrollbar { display: none; }
+  .scroll-track > * {
+    scroll-snap-align: start;
+    flex-shrink: 0;
+  }
+
+  /* Section padding */
+  .section-pad {
+    padding-block: clamp(4rem, 8vw, 8rem);
+  }
+}
+
+/* ── GSAP will-change hints ──────────────────────── */
+[data-gsap-reveal] {
+  will-change: transform, opacity;
+}
